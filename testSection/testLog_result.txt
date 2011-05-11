@@ -1,0 +1,109 @@
+#1 - Insert new family F1 and key R1
+put 1 f1 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 1
+
+#2 - Insert new family F2 and key R1 
+put 2 f2 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 2
+
+#3 - Insert new key R2 in family F1
+put 3 f1 r2 a1 v1 a4 v4 a5 v5 3
+
+#4 - Insert new field A6 in family F1 and key K1
+put 4 f1 r1 a6 v6 4
+
+#5 - Update field A2 with value v7 in family F2 and key R1
+put 5 f2 r1 a2 v7 5
+
+#6 - Delete fields A1 and A5 in family F1 and key R2 
+delete 6 f1 r2 a1 a5 6 
+
+#7 - Insert new fields A6 and A7, update field A3 in family F1 and key R1 (C PUT-PUT #4)
+put 7 f1 r1 a3 v8 a6 v10 a7 v11 3
+
+#8 - Insert new fields A8 and A9, update fields A3, A6, A7 in family F1 and key R1 (C PUT-PUT #4, PUT-PUT #7)
+put 8 f1 r1 a3 v12 a6 v13 a7 v14 a8 v15 a9 v16 2
+
+#9 - Delete fields A1 and A4 in family F1 and key R2 (C DELETE-DELETE #6)
+delete 9 f1 r2 a1 a4 5 
+
+#10 - Delete fields A2 and A1 in family F2 and key R1 (C DELETE-PUT #5)
+delete 10 f2 r1 a2 a1 3
+
+#11 - Delete fields A2, A3 and A4 in family F1 and key R1
+delete 11 f1 r1 a2 a3 a4 6
+
+#12 - Put fields A3, A4 and A4 in family F1 and key R1 (C PUT-DELETE #11)
+put 12 f1 r1 a3 v17 a4 v18 a5 v19 5
+
+#13 - Put field A6 in family F1 and key R2
+put 13 f1 r2 a6 v20 7
+
+#14 - Put fields A1 and A5 in family F1 and key r2 (C PUT-PUT #13, PUT-DELETE #9, PUT_DELETE #6)(NO OP)
+put 14 f1 r2 a1 v1 a5 v4 a6 v1 4
+
+FirstStep:
+<K1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+
+SecondStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+<F2, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+
+ThirdStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+<F1, R2>: <(a1,v1),(a4,v4),(a5,v5)>
+<F2, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+
+FourthStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5),(a6,v6)>
+<F1, R2>: <(a1,v1),(a4,v4),(a5,v5)>
+<F2, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5)>
+
+FifthStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5),(a6,v6)>
+<F1, R2>: <(a1,v1),(a4,v4),(a5,v5)>
+<F2, R1>: <(a1,v1),(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+SixthStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v3),(a4,v4),(a5,v5),(a6,v6)>
+<F1, R2>: <(a4,v4)>
+<F2, R1>: <(a1,v1),(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+SeventhStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v8),(a4,v4),(a5,v5),(a6,v6),(a7,v11)>
+<F1, R2>: <(a4,v4)>
+<F2, R1>: <(a1,v1),(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+EighthStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v8),(a4,v4),(a5,v5),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: <(a4,v4)>
+<F2, R1>: <(a1,v1),(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+NinethStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v8),(a4,v4),(a5,v5),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: < >
+<F2, R1>: <(a1,v1),(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+TenthStep:
+<F1, R1>: <(a1,v1),(a2,v2),(a3,v8),(a4,v4),(a5,v5),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: < >
+<F2, R1>: <(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+EleventhStep:
+<F1, R1>: <(a1,v1),(a5,v5),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: < >
+<F2, R1>: <(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+TwelvethStep:
+<F1, R1>: <(a1,v1),(a5,v19),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: < >
+<F2, R1>: <(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+ThirdteenthStep:
+<F1, R1>: <(a1,v1),(a5,v19),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: <(a6,v20)>
+<F2, R1>: <(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+
+FourteenthStep:
+<F1, R1>: <(a1,v1),(a5,v19),(a6,v6),(a7,v11),(a8,v15),(a9,v16)>
+<F1, R2>: <(a6,v20)>
+<F2, R1>: <(a2,v7),(a3,v3),(a4,v4),(a5,v5)>
+

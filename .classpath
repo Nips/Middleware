@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/apache-cassandra-0.6.8.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/hadoop-core-0.20.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/libthrift-r917130.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/cassandra/slf4j-log4j12-1.5.8.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/hbase/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/mongo/mongo-2.4.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/jgroups-2.11.0.GA.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/hbase/hadoop-core-0.20-append-r1056497.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/hbase/hbase-0.90.0.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/hbase/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/Users/andre/Documents/workspace/java/Middleware/lib/hbase/zookeeper-3.3.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

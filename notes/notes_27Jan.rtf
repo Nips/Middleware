@@ -1,0 +1,14 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 27 Jan 2011\
+\
+Chat with Nuno Pregui\'e7a:\
+\
+I found a way to resolve the Reads problem, facing the write transformations. It is essential that reads only see the writes issued before and executed by a client. To this matter it will be used a single timestamp (or vector?) to know if a certain server is sufficiently updated to give an answer. If the read timestamp is smaller than the servers known timestamp, the read can be executed directly in db. Else the read cannot be executed and a failure message is thrown to the client.\
+The client only communicates with one server for reads at a time. In the case that a read returns an error message, another server must be chosen. The timestamp here gives us the change to evaluate how much update is a server and if had already seen a clients previous updates.\
+\
+Additionally was suggested to do some operational optimization in terms of reads. When a read is received at first must see the log to search for an answer. This implies that puts and delete must store also fields values. If nothing is found, a read operation is sent to the db. This kind of approximation increments the speed of responses to a read and decreases the saturation in the databases. }

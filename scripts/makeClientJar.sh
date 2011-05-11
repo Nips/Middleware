@@ -1,0 +1,1 @@
+jar cf middleware.jar ../bin/pt/fct/di/clientProxy ../bin/pt/fct/di/serverProxy  ../bin/pt/fct/di/util ../bin/pt/fct/di/client/CException.class ../bin/pt/fct/di/ops ../bin/pt/fct/di/db/ConsistencyLevel.class 

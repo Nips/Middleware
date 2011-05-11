@@ -1,0 +1,7 @@
+dbname=pt.fct.di.db.HBase
+dbtablename=usertable
+hbaseconfigfile=conf/props/hbase/hbase-site.xml
+commname=pt.fct.di.serverProxy.comm.SimpleTCPComm
+midserverIP=127.0.0.1
+midserverPort=6790
+debug=false

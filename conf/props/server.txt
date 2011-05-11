@@ -1,0 +1,10 @@
+dbname=pt.fct.di.db.MongoDB
+hbaseconfigfile=conf/props/hbase/hbase-site.xml
+mongodb.writeConcern=normal
+hosts=127.0.0.1:27017
+dbtablename=usertable
+commname=pt.fct.di.serverProxy.comm.SimpleTCPComm
+midserverIP=127.0.0.1
+midserverPort=6791
+commConfFile=/home/andre/workspace/brianfrankcooper-YCSB-4af247f/conf/comm/udp.xml
+debug=false

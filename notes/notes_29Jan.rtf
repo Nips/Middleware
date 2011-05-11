@@ -1,0 +1,16 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 29 January 2011\
+\
+Today in the bathroom i had a great realization about reads and stuff\'85\
+\
+How can we see if a certain read must be accepted or not at all? Well we certainly wont transform this messages likes we have done with put and deletes. So theres only 2 options in the end: execute or not execute some read.\
+The first guarantee that is essential to provide is that all reads issued by a client see the writes executed before. So this is basically FIFO order (all operations are executed in the server by the same order that were issued in the client). \
+\
+In my middleware this guarantee is already preserved, since all requests from a client are executed sequentially in the server. But what happens when a write fails for some reason? It means that the server will be old-dated related to other server and can't respond properly to request from that client. The fastest way to resolve this is sending with the read a field with the current client timestamp. Then this timestamp is compared with one in server (The rest is explained in notes from 27 January). Other way is to change to other server immediately that has responded to all writes correctly. \
+\
+Note: Where we are assuming that the writes aren't resent again in the presence of fails. Replica synchronization will treat this problem. }

@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 2 February 2011\
+\
+Thoughts about timestamps:\
+\
+Lamport's approximation to ordering events using timestamps says that when a event occurs in a entity his clock must be incremented by one and when it receives a new message, entity's clock is given by Max(hisTs, messageTs).  This approximation is used in the middleware. So when a server receives a new message from a client, compares is own with the one in the message and set the highest. When a client sends a message to a server and vice-versa, the clock is increment by one. \
+\
+So why do we set the highest one in the beginning? This allow us two things, update the server's clock to maintain in the rithm of clients and synchronize clients clocks through the servers global knowledge. If a client hasn't done operations for a long time it will have a clock "desactualizado" comparatively to other clients. When contacts the server for the next time, it will receive the server's actual clocks that is synchronized with other clients clocks. So it possible to infer that the client will be updated and ready to send operations within the other clients rithm. \
+\
+We update the clocks by one in every event to guarantee the all entities evolve over time. }

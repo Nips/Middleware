@@ -1,0 +1,12 @@
+11 February 2011
+
+Problems with database:
+	
+	Cassadra - Thrift library doesn't support multiple threads
+	Hbase - Same problem
+
+
+Problems with heap space:
+	
+	Think about this and write….
+	

@@ -1,0 +1,4 @@
+db=com.yahoo.ycsb.db.MiddlewareClient
+dbtablename=tests
+commname=pt.fct.di.clientProxy.comm.JGroupsComm
+commConfFile=../conf/comm/stackConf.xml

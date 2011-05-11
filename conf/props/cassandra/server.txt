@@ -1,0 +1,12 @@
+dbname=pt.fct.di.db.Cassandra6
+hosts=127.0.0.1,127.0.0.1
+dbtablename=usertable
+externalComm=pt.fct.di.serverProxy.comm.external.SimpleTCPComm
+midserverIP=127.0.0.1
+midserverPort=6789
+internalComm=pt.fct.di.serverProxy.comm.internal.InternalTCPComm
+serversInternalAddresses=127.0.0.1:5002,127.0.0.1:5001
+serverId=1
+remoteValues=true
+syncWaitingTime=500
+debug=false

@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 1 February 2011\
+\
+Changes:\
+\
+- MSocket: I changed the object _proxies from a TransportThread array to a map with address as a key and TransportThread as a values. This change occurred because I need to give full control to the TransportLayer of the client so he can select the server to contact, dynamically, when needed. This way the socket only is used to send and receive messages and doesn't change settings without knowledge of the client. \
+\
+Two primitives are now offered, sendMessage(op) to send the same message to all bound servers and sendMessage(op, serverAddr) to only send this message to the address given. In the second primitive we can directly fetch the TransportThread associated to the address given in argument.\
+\
+- New problem in Server Service: How to modify operation orderTransformExecute to receive a ordinary operation and order, transform and execute it in the db? At this time only thoughts\'85}
