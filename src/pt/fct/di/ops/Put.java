@@ -274,12 +274,12 @@ public class Put extends ClientOperation implements LoggableOperation{
 
 	@Override
 	public ILogOperation convertToLog() {
-		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues(), _versionVector[_id]+1);
+		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues(), _versionVector[_id]+1); //Change this
 	}
 	
 	@Override
 	public ILogOperation convertToLog(DB remotedb) {
-		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues().keySet(), _versionVector[_id]+1, remotedb);
+		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues().keySet(), _versionVector[_id]+1, remotedb); //Change this
 	}
 
 	/** After transforming an operation the final set of fields that not conflict with new operation log entries is 

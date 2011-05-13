@@ -56,7 +56,7 @@ public class SyncManager {
 			for(int pos = 0; pos<_vectors.length; pos++)
 				_vectors[pos] = new VersionVector();
 			_waitingTime = Long.parseLong(_p.getProperty("syncWaitingTime")); 
-			if(_waitingTime > 500) initHandler();
+//			if(_waitingTime > 500) initHandler();
 		} catch (CommException e) {
 			throw new SyncException(e);
 		}

@@ -1,1 +1,3 @@
-bin
+bin/*
+lib/JGroups_Doc/*
+lib/groups-2.11.0.GA.jar

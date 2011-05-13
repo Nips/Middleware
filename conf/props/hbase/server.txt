@@ -1,7 +1,12 @@
 dbname=pt.fct.di.db.HBase
 dbtablename=usertable
 hbaseconfigfile=conf/props/hbase/hbase-site.xml
-commname=pt.fct.di.serverProxy.comm.SimpleTCPComm
+externalComm=pt.fct.di.serverProxy.comm.external.SimpleTCPComm
 midserverIP=127.0.0.1
 midserverPort=6790
+internalComm=pt.fct.di.serverProxy.comm.internal.InternalTCPComm
+serversInternalAddresses=127.0.0.1:5001,127.0.0.1:5002
+serverId=1
+remoteValues=false
+syncWaitingTime=500
 debug=false

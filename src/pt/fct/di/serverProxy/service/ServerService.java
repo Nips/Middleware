@@ -1,5 +1,8 @@
 package pt.fct.di.serverProxy.service;
 
+//TODO: Implement client registry to fetch a DBInstance
+
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
