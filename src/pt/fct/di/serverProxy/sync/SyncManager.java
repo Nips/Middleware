@@ -77,9 +77,9 @@ public class SyncManager {
 		return _vectors[_myId].setClientVersion(client_id, value);
 	}
 	
-	public long[] updateAndGetVector(int client_id)
+	public long[] updateAndGetVector(int client_id, long ts)
 	{
-		return _vectors[_myId].updateAndGetVector(client_id);
+		return _vectors[_myId].updateAndGetVector(client_id, ts);
 	}
 	
 	public void compareVersionVectors(long[] otherVector)

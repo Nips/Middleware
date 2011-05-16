@@ -1,6 +1,7 @@
 package pt.fct.di.serverProxy.sync;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * This class represents a server version vector. 
@@ -20,68 +21,78 @@ public class VersionVector {
 	private final int DEFAULT_SIZE = 10;
 	
 	//Vector Object...
-	private long[] _vector;
+	private AtomicLong[] _vector;
 	
 	public VersionVector()
 	{
-		_vector = new long[DEFAULT_SIZE];
+		_vector = new AtomicLong[DEFAULT_SIZE];
+		for(int pos = 0; pos < DEFAULT_SIZE; pos++) _vector[pos] = new AtomicLong(0);
 	}
 	
 	public VersionVector(int size)
 	{
-		_vector = new long[size];
+		_vector = new AtomicLong[size];
+		for(int pos = 0; pos < size; pos++) _vector[pos] = new AtomicLong(0);
 	}
 	
 	public void setNewVector(long[] otherVector)
 	{
-		_vector = otherVector;
+		AtomicLong[] aux = new AtomicLong[otherVector.length];
+		for(int pos=0; pos < otherVector.length; pos++)
+			aux[pos] = new AtomicLong(otherVector[pos]);
+		_vector = aux;
 	}
 	
-	public synchronized long[] getVector()
+	public long[] getVector()
 	{
-		return _vector;
+		long[] aux = new long[_vector.length];
+		for(int pos=0; pos < _vector.length; pos++ ) aux[pos] = _vector[pos].get();
+		return aux;
 	}
 	
-	public void registerClient(int id)
-	{
-		_vector[id] = 0;
-	}
+//	public void registerClient(int id)
+//	{
+//		_vector[id] = new AtomicLong(0);
+//	}
 	
-	public void deleteClient(int id)
+//	public void deleteClient(int id)
+//	{
+//		_vector[id] = 0;
+//	}
+	
+	public long getClientVersion(int id)
 	{
-		_vector[id] = 0;
+		return _vector[id].get();
 	}
 	
 	public long setClientVersion(int id)
 	{
-		_vector[id] = _vector[id]+1;
-		return _vector[id];
+		return _vector[id].incrementAndGet();
 	}
 	
 	public long setClientVersion(int id, long value)
 	{
-		_vector[id] = _vector[id]+value;
-		return _vector[id];
+		return _vector[id].addAndGet(value);
 	}
 	
-	public synchronized long[] updateAndGetVector(int id)
+	public long[] updateAndGetVector(int id, long ts)
 	{
-		_vector[id] = _vector[id]+1;
+		AtomicLong along = _vector[id];
+		long currentValue = along.get();
+		while(!along.compareAndSet(currentValue, (Math.max(currentValue, ts)+1))) currentValue = _vector[id].get();
+//		_vector[id].incrementAndGet();
 //		System.out.println("Clock: "+_vector[id]);
-		return _vector;
+		return getVector();
 	}
 	
-	public long getClientVersion(int id)
-	{
-		return _vector[id];
-	}
 	
+	//TODO: Transform this method to a more generic one
 	public boolean updated(long[] otherVector)
 	{
 		boolean updated = true;
 		for(int i=0; i<_vector.length; i++)
 		{
-			if(_vector[i] < (otherVector[i]-1))
+			if(_vector[i].get() < (otherVector[i]-1))
 			{
 				updated = false;
 				break;
@@ -90,6 +101,7 @@ public class VersionVector {
 		return updated;
 	}
 	
+	//TODO: Verify the validity of this method
 	public boolean compare(long[] otherVector, Map<Integer,Long> missingUpdates)
 	{
 //		if(otherVector.length > _vector.length) _vector = Arrays.copyOf(_vector, otherVector.length);
@@ -97,8 +109,9 @@ public class VersionVector {
 		long diff = 0;
 		for(int i=0; i < _vector.length; i++)
 		{
-			diff = otherVector[i] - _vector[i]; 
-			if(diff > 1) missingUpdates.put(i, _vector[i]+1);
+			long value = _vector[i].get();
+			diff = otherVector[i] - value; 
+			if(diff > 1) missingUpdates.put(i, value+1);
 		}
 		
 		if(missingUpdates.size() > 0) return false;

@@ -61,7 +61,7 @@ public class HBase extends DB
 //    public String _columnFamily="";
 //    public byte _columnFamilyBytes[];
 
-    public static final int Ok=0;
+    public static final int Ok=1; //To differentiate with NOOp result
     public static final int ServerError=-1;
     public static final int HttpError=-2;
     public static final int NoMatchingRecord=-3;

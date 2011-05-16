@@ -29,14 +29,20 @@ public class SequencialLog {
 		_sequencialLog = new PriorityQueue<ILogOperation>(collection);
 	}
 	
+	public synchronized int getSize()
+	{
+		return _sequencialLog.size();
+	}
+	
 	public synchronized boolean put(ILogOperation op)
 	{
-		boolean set = _sequencialLog.add(op); 
+		boolean set = _sequencialLog.offer(op); 
 //		System.out.println("Is op inside log? "+_sequencialLog.contains(op));
 		return set;
 	}
 	
-	public void deleteOldOperations(long endTimestamp)
+	//TODO: Verify this method for correctness!!!!!
+	public synchronized void deleteOldOperations(long endTimestamp)
 	{
 		ILogOperation op = null;
 		
@@ -63,7 +69,7 @@ public class SequencialLog {
 		{
 			ILogOperation op = it.next();
 			msg += op.toString();
-			msg += ", ";
+			msg += ", \n";
 		}
 		msg += "}\n";
 		msg += "******************************************";

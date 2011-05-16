@@ -18,9 +18,7 @@ public class MessageDispatcher {
 	private ServerService _service;
 	private SyncManager _sync;
 	
-	private AtomicInteger _activeClients;
-	private AtomicBoolean _syncPhase;
-	private AtomicBoolean _getInfoPhase;
+	private AtomicInteger _noOpOccurencies; //for testing proposes only.
 	protected final SimpleCondition _clientcondition = new SimpleCondition();
 	protected final SimpleCondition _servercondition = new SimpleCondition();
 //   protected final SimpleCondition _serverCondition = new SimpleCondition();
@@ -29,13 +27,12 @@ public class MessageDispatcher {
 	{
 		this._service = service;
 		this._sync = manager;
-		this._activeClients = new AtomicInteger(0);
-		this._syncPhase = new AtomicBoolean(false);
-		this._getInfoPhase = new AtomicBoolean(false);
+		this._noOpOccurencies = new AtomicInteger(0);
 	}
 	
 	public void close()
 	{
+		System.out.println("NoOpOccurrencies: "+_noOpOccurencies.get());
 		long[] vv = _sync.getOwnVector();
 		System.out.print("VersionVector: [ ");
 		for(int pos = 0; pos < vv.length; pos++)
@@ -54,15 +51,19 @@ public class MessageDispatcher {
 //		System.out.print("Operation received... ");
 //		_sync.compareVersionVectors(op.getVersionVector()); 
 		IResult result = null;
-		int opType = op.getType();
+		final int opType = op.getType();
+		final int opId = op.getID();
 //		System.out.println("Operation type: "+opType);
 		if(opType == 1 || opType == 2)
 		{
 //			System.out.print("Order and Transformation phase...");
-//			result = _service.orderTransformExecute((LoggableOperation)op);
-			result = new UpdateResult(0);
-			//_sync.updateClientVersion(op.getID());
-			result.setVersionVector(_sync.updateAndGetVector(op.getID()));
+			result = _service.orderTransformExecute((LoggableOperation)op);
+			if(result.getCode() > 0) result.setVersionVector(_sync.updateAndGetVector(opId, op.getVersionVector()[opId]));
+			else
+			{
+				_noOpOccurencies.incrementAndGet();
+				result.setVersionVector(_sync.getOwnVector());
+			}
 //			if(result.getCode() >= 0) _countWrites++;
 		}
 		else

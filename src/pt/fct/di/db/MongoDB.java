@@ -26,7 +26,7 @@ import pt.fct.di.util.Constants;
 public class MongoDB extends pt.fct.di.db.DB{
 	
 	static Random random=new Random();
-	public static final int Ok=0;
+	public static final int Ok=1; //To differentiate with NOOp result
 	public static final int Error=-1;
 	
 	private final String CONNECTION_RETRY_PROPERTY="cassandra.connectionretries";
@@ -338,7 +338,7 @@ public class MongoDB extends pt.fct.di.db.DB{
 				for(String field: fields)
 				{
 					fieldsToSet.put(field, 1);
-					System.out.println("field: "+field);
+//					System.out.println("field: "+field);
 				}
 				u.put("$unset", fieldsToSet);
 				

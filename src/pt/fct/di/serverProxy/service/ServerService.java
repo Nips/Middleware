@@ -128,6 +128,9 @@ public class ServerService {
 //		_clientLog.deleteOldOperations(0, 4);
 //		_sequencialLog.deleteOldOperations(0, 4);
 //		this.logToString();
+		System.out.println("StructuredLogSize: "+_structuredLog.getSize());
+		System.out.println("ClientLogSize: "+_clientLog.getSize());
+		System.out.println("SequencialLogSize: "+_sequencialLog.getSize());
 		
 		try {
 			_db.cleanup();
@@ -174,80 +177,78 @@ public class ServerService {
 	 */
 	public IResult orderTransformExecute(LoggableOperation op) throws ServiceException
 	{
-		Pair<String, String> familyAndKey = op.getFamilyAndKey();
+		ILogOperation newLogOp = null;
+		if(_isRemoteValuesSet) newLogOp = op.convertToLog(_db);
+		else newLogOp = op.convertToLog();
 		
 		//Atomic test to verify if this operation is the first to inserted in the log for some family and key.
-		if(testAndAddNewOperation(op)) return this.executeUpdates(op);
-		
+		if(testAndAddNewOperation(newLogOp)) return this.executeUpdates(op);
 		// System.out.println("Row already exists...");
+		LinkedList<ILogOperation> record = _structuredLog.get(newLogOp.getFamilyAndKey());
 		
 		IResult result = null;
-		
-		LinkedList<ILogOperation> record = _structuredLog.get(familyAndKey);
 		synchronized(record)
 		{
-			ILogOperation resultOp = null;
-			if(_isRemoteValuesSet) resultOp = op.convertToLog(_db);
-			else resultOp = op.convertToLog();
-			
-//			try {
-//				System.out.println("OpLog size: "+resultOp.serialize().length);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
 			//System.out.println("OrderPhase initiated...");
-			
 			//Order phase 
-			ListIterator<ILogOperation> it = _structuredLog.putInRecord(record, resultOp);
-//			_clientLog.put(op.getID(), resultOp);
-//			_sequencialLog.put(resultOp);
-			
+			ListIterator<ILogOperation> it = _structuredLog.putInRecord(record, newLogOp);
 			//System.out.println("OrderPhase completed...");
 			
-			Set<String> resultOpFields = resultOp.getFields();
-			ILogOperation opLog = null;
-			Set<String> logOpFields = null;
-			
+			Set<String> newLogOpFields = newLogOp.getFields();
+			Set<String> opLogFields = null;
+			int jumps = 0;
 			//System.out.println("TransformationPhase initiated...");
 			
 			//TransformationPhase
 			while(it.hasNext())
 			{
-				opLog = it.next();
 //				System.out.println(opLog.toString());
-				logOpFields = opLog.getFields();
+				opLogFields = it.next().getFields();
+				
+				newLogOpFields.removeAll(opLogFields);  //SetA - SetB
+				jumps++; //number of ops seen in the log
 				
 				//If the logOp set contains all elements of resultOp set, the resultOp can't be executed
 				//and must be deleted from the log. A NoOp operation is returned.
-				if(logOpFields.containsAll(resultOpFields))  //TODO: Remove NoOp Operation from log?
+				if(newLogOpFields.isEmpty())
 				{
-					//System.out.println("Operation set is contained...");
-//					System.out.println("NOOP");
-					while(!it.previous().equals(resultOp)){} //Change iterator pointer to the operation to remove
+					while(jumps > 0){ jumps--; it.previous(); } //Change iterator pointer to the operation to remove
 					it.remove(); //Remove resultOp from log
-					resultOp = null;
 					result = new UpdateResult(0);
 					break;
 				}
-				else //All operations (Put and Delete) are transformed in the same way
-				{
-					//System.out.println("Operation must be transformed...");
-					resultOpFields.removeAll(logOpFields); //SetA - SetB
-				}
+				
+//				if(opLogFields.containsAll(newLogOpFields))  //TODO: Remove NoOp Operation from log?
+//				{
+//					//System.out.println("Operation set is contained...");
+////					System.out.println("NOOP");
+//					while(jumps > 0){ jumps--; it.previous(); } //Change iterator pointer to the operation to remove
+//					it.remove(); //Remove resultOp from log
+//					result = new UpdateResult(0);
+//					break;
+//				}
+//				else //All operations (Put and Delete) are transformed in the same way
+//				{
+//					//System.out.println("Operation must be transformed...");
+//					jumps++;
+//					newLogOpFields.removeAll(opLogFields); //SetA - SetB
+//				}
 			}
 			
 			//System.out.println("TransformationPhase done...");
 			
 			it = null;
-			opLog = null;
-			logOpFields = null;
+			opLogFields = null;
 			
 			//only if a result hasn't been reached in this phase, the operation must be executed against a DB
 			//System.out.println("ExecutePhase initializing...");
-			op.updateFields(resultOpFields);
-			if(result == null) result = this.executeUpdates(op);
+			if(result == null)
+			{
+				op.updateFields(newLogOpFields);
+				_clientLog.put(op.getID(), newLogOp);
+				_sequencialLog.put(newLogOp);
+				result = this.executeUpdates(op);
+			}
 			//System.out.println("ExecutePhase done...");
 		}
 		return result;
@@ -261,25 +262,25 @@ public class ServerService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public synchronized boolean testAndAddNewOperation(LoggableOperation op)
+	public synchronized boolean testAndAddNewOperation(ILogOperation op)
 	{
 		Pair<String, String> familyAndKey = op.getFamilyAndKey();
 		if(!_structuredLog.containsKey(familyAndKey))
 		{
 			LinkedList<ILogOperation> newRecord = new LinkedList<ILogOperation>();
-			ILogOperation opLog = null;
-			if(_isRemoteValuesSet) opLog = op.convertToLog(_db);
-			else opLog = op.convertToLog();
+//			ILogOperation opLog = null;
+//			if(_isRemoteValuesSet) opLog = op.convertToLog(_db);
+//			else opLog = op.convertToLog();
 //			try {
 //				System.out.println("OpLog size: "+opLog.serialize().length);
 //			} catch (IOException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			newRecord.addLast(opLog);
+			newRecord.addLast(op);
 			_structuredLog.put(familyAndKey, newRecord);
-//			_clientLog.put(op.getID(), opLog);
-//			_sequencialLog.put(opLog);
+			_clientLog.put(op.getID(), op);
+			_sequencialLog.put(op);
 			return true;
 		}
 		return false;

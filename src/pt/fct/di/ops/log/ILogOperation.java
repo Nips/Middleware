@@ -47,5 +47,8 @@ public interface ILogOperation extends LoggableOperation, Comparable<ILogOperati
 	 * @throws IOException
 	 */
 	void deserialize(ObjectInputStream ois) throws IOException;
+	
+	@Override
+	public int compareTo(ILogOperation otherOp);
 
 }

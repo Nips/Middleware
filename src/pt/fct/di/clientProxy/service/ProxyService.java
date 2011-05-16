@@ -3,6 +3,7 @@ package pt.fct.di.clientProxy.service;
 //import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 //import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import pt.fct.di.db.ConsistencyLevel;
 
 import pt.fct.di.client.CException;
 import pt.fct.di.clientProxy.comm.ClientComm;
+import pt.fct.di.clientProxy.comm.ClientCommFactory;
 import pt.fct.di.ops.*;
 import pt.fct.di.serverProxy.comm.CommException;
 import pt.fct.di.util.SystemProperties;
@@ -43,30 +45,41 @@ public class ProxyService implements IService{
 	/**
 	 * Controls the assignment of timestamps.
 	 */
-	private static Timer _timer = null;
+	private Timer _timer = null;
 	
 	/**
 	 * Attributes a new id to an operation on a sequence order starting at 1.
 	 */
-	private static SequencerId _seqId;
+	private SequencerId _seqId;
 	
 	/**
 	 * Client's unique Identifier
 	 */
-	private static int _clientId;
+	private int _clientId;
 	
 	/**
 	 * Number of servers that the client connects.
 	 */
 	private int _nServers;
 	
+	public static ProxyService _ownInstance = new ProxyService();
+	
 	private boolean _debug;
 
 //	private long _timestamp; //last timestamp known by the client
 //	private int _nextSeq; //seq id to attribute to the next operation
 	
-	public ProxyService(ClientComm comm){
-		this._comm = comm;
+//	public ProxyService(ClientComm comm){
+//		this._comm = comm;
+//	}
+	
+	public static ProxyService getInstance() throws CException
+	{
+		synchronized(_ownInstance)
+		{
+			if(_ownInstance._comm == null) _ownInstance.init();
+			return _ownInstance;
+		}
 	}
 	
 	/**
@@ -76,14 +89,17 @@ public class ProxyService implements IService{
 	 */
 	public void init() throws CException
 	{
+//		Properties properties = SystemProperties.getProperties();
 		try {
+			_clientId = Integer.parseInt(SystemProperties.testAndGetPropertie("clientId"));
+			_comm = ClientCommFactory.newComm(SystemProperties.getProperties());
 			_comm.init();
-		} catch (CommException e) {
+		} catch (Exception e) {
 			throw new CException(e);
 		}
 		_timer = new VersionVector();
 		_seqId = SequencerId.getInstance();
-		_clientId = SystemProperties.getClientId();
+
 		_nServers = _comm.getNumberServers();
 		_comm.setService(this);
 		_debug = SystemProperties._debug;
@@ -95,7 +111,7 @@ public class ProxyService implements IService{
 	public void cleanup()
 	{
 		long[] vv = _timer.getTimeVector();
-		System.out.print("VersionVector: [ ");
+		System.out.print("FinalVersionVector: [ ");
 		for(int pos = 0; pos < vv.length; pos++)
 			System.out.print(vv[pos]+", ");
 		System.out.println("]");
@@ -125,7 +141,7 @@ public class ProxyService implements IService{
 		_nServers = nservers;
 	}
 	
-	public static void updateTimeVector(long[] otherVector) throws Exception
+	public void updateTimeVector(long[] otherVector) throws Exception
 	{
 		_timer.updateTimer(otherVector);
 //		System.out.println("Clock: "+_timer.getTimeVector()[_clientId]);

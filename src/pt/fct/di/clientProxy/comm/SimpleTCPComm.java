@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import pt.fct.di.client.CException;
 import pt.fct.di.clientProxy.net.IAsyncCallback;
 import pt.fct.di.clientProxy.service.ProxyService;
 import pt.fct.di.multicastTCP.TCPException;
@@ -192,28 +193,36 @@ public class SimpleTCPComm extends ClientComm{
 		public void run()
 		{
 			IResult r = null;
-			while(!close)
-			{
-				try {
-					r = getResult();
-//					if(_debug) System.out.println("while: "+r.getID());
-					
-					try {
-						ProxyService.updateTimeVector(r.getVersionVector());
-					} catch (Exception e) {
-						System.err.println(e.getMessage());
-					}
-					
-					IAsyncCallback cb = ClientComm.getRegisteredCallback(r.getOpSeq());
-					if(cb != null) cb.response(r);
+			ProxyService p;
+			try {
+				p = ProxyService.getInstance();
 
-//					if(_debug) System.out.println("Continue...");
-				} catch (TCPException e) {
-//					if(_debug) e.printStackTrace();
-//					throw new RuntimeException(e);
+				while(!close)
+				{
+					try {
+						r = getResult();
+	//					if(_debug) System.out.println("while: "+r.getID());
+						
+						try {
+							p.updateTimeVector(r.getVersionVector());
+						} catch (Exception e) {
+							System.err.println(e.getMessage());
+						}
+						
+						IAsyncCallback cb = ClientComm.getRegisteredCallback(r.getOpSeq());
+						if(cb != null) cb.response(r);
+	
+	//					if(_debug) System.out.println("Continue...");
+					} catch (TCPException e) {
+	//					if(_debug) e.printStackTrace();
+	//					throw new RuntimeException(e);
+					}
 				}
+	//			if(_debug) System.out.println("End of road...");
+			} catch (CException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-//			if(_debug) System.out.println("End of road...");
 		}
 		
 		public void close()

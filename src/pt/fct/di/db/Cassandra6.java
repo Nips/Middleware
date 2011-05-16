@@ -23,10 +23,12 @@ import pt.fct.di.util.Constants;
 /**
  * Cassandra 0.6 client for middleware
  */
+
+//TODO: Verify correctness of this class!!!
 public class Cassandra6 extends DB
 {
 	static Random random=new Random();
-	public static final int Ok=0;
+	public static final int Ok=1; //To differentiate with NOOp result
 	public static final int Error=-1;
 
 	public int ConnectionRetries;
@@ -349,8 +351,8 @@ public class Cassandra6 extends DB
 	{
 		
 //		System.out.println("MapSize db put: "+values.size());
-		for(Map.Entry<String, String> entry : values.entrySet())
-			System.out.println("Key: "+entry.getKey()+" Value: "+entry.getValue());
+//		for(Map.Entry<String, String> entry : values.entrySet())
+//			System.out.println("Key: "+entry.getKey()+" Value: "+entry.getValue());
 		
 		Exception errorexception=null;
 	  

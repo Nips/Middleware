@@ -66,18 +66,9 @@ public class ClientProxy {
 	
 	public void init() throws CException
 	{
-		try
-		{
-			ClientComm comm = ClientCommFactory.newComm(_p);
-			_service = new ProxyService(comm);
-			_service.init();
-			_debug = SystemProperties._debug;
-			//System.out.println(_debug);
-		}
-		catch(UnknownCommException uce)
-		{
-			throw new CException(uce.getMessage());
-		}
+		_service = ProxyService.getInstance();
+		_debug = SystemProperties._debug;
+		//System.out.println(_debug);
 	}
 	
 	public void cleanup()

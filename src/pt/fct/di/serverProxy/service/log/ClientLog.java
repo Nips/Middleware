@@ -23,17 +23,38 @@ public class ClientLog {
 		_clientLog = new HashMap<Integer,TreeSet<ILogOperation>>(initialSize);
 	}
 	
+	public int getSize()
+	{
+		int nElems = 0;
+		for(TreeSet<ILogOperation> ops : _clientLog.values())
+			synchronized(ops)
+			{
+				nElems += ops.size();
+			}
+		return nElems;
+	}
+	
+	private synchronized boolean testAddSetNewClient(int id, ILogOperation op)
+	{
+		if(!_clientLog.containsKey(id))
+		{
+			TreeSet<ILogOperation> client = new TreeSet<ILogOperation>();
+			client.add(op);
+			_clientLog.put(id,client);
+			return true;
+		}
+		return false;
+	}
+	
 	public void put(Integer clientId, ILogOperation op)
 	{
+		if(testAddSetNewClient(clientId,op)) return;
+		
 		TreeSet<ILogOperation> pq = _clientLog.get(clientId); 
-		if(pq == null)
+		synchronized(pq)
 		{
-			pq = new TreeSet<ILogOperation>();
 			pq.add(op);
-			_clientLog.put(clientId, pq);
 		}
-		else pq.add(op);
-//		System.out.println("Is op inside log? "+pq.contains(op));
 	}
 	
 	public Set<Map.Entry<Integer,TreeSet<ILogOperation>>> entrySet() {
@@ -86,7 +107,7 @@ public class ClientLog {
 			while(log.hasNext())
 			{
 				next = log.next();
-				msg+= " "+next.toString()+", ";
+				msg+= " "+next.toString()+", \n";
 			}
 			msg += "}\n";
 			msg += "******************************************";

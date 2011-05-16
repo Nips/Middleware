@@ -21,7 +21,7 @@ public class VersionVector implements Timer{
 	
 	public synchronized long[] getTimeVector()
 	{
-		return _versionVector;
+		return _versionVector.clone();
 	}
 	
 	public void updateOwnTime(int id)

@@ -28,6 +28,7 @@ public class LogTest {
 			
 			ServerService ss = new ServerService();
 			ss.init();
+			long[] versionVector = new long[10];
 			
 			String line = "";
 			StringTokenizer st = null;
@@ -58,7 +59,8 @@ public class LogTest {
 					op.setColumnFamily(command[2]);
 					op.setRowKey(command[3]);
 					op.setValues(fields);
-					op.setTS(Long.parseLong(command[command.length-1]));
+					versionVector[op.getID()] = Long.parseLong(command[command.length-1]);
+					op.setVersionVector(versionVector);
 					
 					ss.orderTransformExecute(op);
 					ss.logToString();
@@ -78,7 +80,8 @@ public class LogTest {
 					op.setColumnFamily(command[2]);
 					op.setRowKey(command[3]);
 					op.setFields(fields);
-					op.setTS(Long.parseLong(command[command.length-1]));
+					versionVector[op.getID()] = Long.parseLong(command[command.length-1]);
+					op.setVersionVector(versionVector);
 					
 					ss.orderTransformExecute(op);
 					ss.logToString();

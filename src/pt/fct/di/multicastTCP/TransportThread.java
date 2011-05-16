@@ -1,5 +1,6 @@
 package pt.fct.di.multicastTCP;
 
+import pt.fct.di.client.CException;
 import pt.fct.di.clientProxy.comm.ClientComm;
 import pt.fct.di.clientProxy.concurrent.OperationQueue;
 import pt.fct.di.clientProxy.net.IAsyncCallback;
@@ -73,6 +74,14 @@ public class TransportThread extends Thread{
 	
 	public void run()
 	{
+		ProxyService service;
+		try {
+			service = ProxyService.getInstance();
+		} catch (CException e1) {
+			System.out.println("CException detected in TransportThread");
+			return;
+		}
+		
 		IResult r = null;
 		IAsyncCallback cb = null;
 		while(!_close /*|| !_opQueue.isEmpty()*/)
@@ -86,7 +95,8 @@ public class TransportThread extends Thread{
 				r = _socket.receiveMessage();
 				
 				try {
-					ProxyService.updateTimeVector(r.getVersionVector());
+					long[] vv = r.getVersionVector();			
+					service.updateTimeVector(vv);
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
@@ -100,11 +110,15 @@ public class TransportThread extends Thread{
 				if(cb!=null) cb.response(r);
 				//else ignore message and carry on...
 			} catch (TCPException e) {
-				if(_debug) e.printStackTrace();
-				throw new RuntimeException(e);
+				//if(_debug) e.printStackTrace();
+//				throw new RuntimeException(e);
+				System.out.println("TCPException detected in method run in TransportThread");
+				return; //This exception states that the connection establish with server broke down. ReEstablish connection or Give up?
 			} catch (InterruptedException e) {
 //				if(_debug) e.printStackTrace();
 //				throw new RuntimeException(e);
+				System.out.println("InterruptedException detected in method run in TransportThread");
+				return;
 			}
 		}
 //		System.out.println("TERMINOU!!!!");
