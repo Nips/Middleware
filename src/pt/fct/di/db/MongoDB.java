@@ -131,15 +131,15 @@ public class MongoDB extends pt.fct.di.db.DB{
 				
 				Map<String, String> result = new HashMap<String, String>();
 	//				
-	//				if(queryResult != null)
-	//				{
-	//					Iterator<String> it = fields.iterator();
-	//					while(it.hasNext()){
-	//						String field = it.next();
-	//						System.out.println("field: "+field+" = "+queryResult.get(field));
-	//					}
-	//				}
-	//				else System.out.println("Row does not exist...");
+//					if(queryResult != null)
+//					{
+//						Iterator<String> it = fields.iterator();
+//						while(it.hasNext()){
+//							String field = it.next();
+//							System.out.println("field: "+field+" = "+queryResult.get(field));
+//						}
+//					}
+//					else System.out.println("Row does not exist...");
 				
 				if(queryResult != null)
 				{
@@ -284,7 +284,7 @@ public class MongoDB extends pt.fct.di.db.DB{
 				// determine if record was inserted
 		        DBObject errors = _db.getLastError();
 	   
-		        if(_debug) System.out.println(errors.get("ok")+" "+errors.get("err"));
+		        /*if(_debug) System.out.println("Insertion return code: "+errors.get("ok")+" "+errors.get("err"));*/
 	            boolean notRisedError = (Double) errors.get("ok") == 1.0 && errors.get("err") == null ? true : false;
 	           
 				if(notRisedError) return new UpdateResult(Ok);
@@ -318,7 +318,7 @@ public class MongoDB extends pt.fct.di.db.DB{
 			long timestamp, ConsistencyLevel level) {
 
 		Exception errorexception=null;
-		if(_debug) System.out.println("Starting delete operation for row: "+key);
+//		if(_debug) System.out.println("Starting delete operation for row: "+key);
 		
 //		if(fields.isEmpty()) errorexception = new DBException("DB - Delete operation must have a collection of fields non empty"); //UnComment to add preconditions
 //		else
@@ -347,7 +347,7 @@ public class MongoDB extends pt.fct.di.db.DB{
 				
 				// determine if record was deleted
 	            DBObject errors = _db.getLastError();
-//	            if(_debug) System.out.println(errors.get("ok"));
+	            /*if(_debug)*/ System.out.println("Deletion return code: "+errors.get("ok"));
 	            boolean notRisedError = (Double) errors.get("ok") == 1.0 && errors.get("err") == null ? true : false;
 	            
 	            if(notRisedError) return new UpdateResult(Ok);

@@ -29,7 +29,7 @@ public class InternalTCPComm extends IComm{
 	/**
 	 * Handler to receive incoming communications.
 	 */
-	private HReceiver _receiver = null;
+//	private HReceiver _receiver = null;
 	
 	/**
 	 * Collection to store severs addresses 
@@ -58,8 +58,8 @@ public class InternalTCPComm extends IComm{
 			ownAddr = null;
 			ipAddr = null;
 			
-			_receiver = new HReceiver();
-			_receiver.start();
+//			_receiver = new HReceiver();
+//			_receiver.start();
 		} catch (IOException e) {
 			CommException ce = new CommException(e.getMessage());
 			ce.setStackTrace(e.getStackTrace());
@@ -76,14 +76,14 @@ public class InternalTCPComm extends IComm{
 		//_dispatcher.close();
 		try {
 			_serverSocket.close();
-			_receiver.interrupt();		
+//			_receiver.interrupt();		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		finally{
 			//_dispatcher = null;
 			_serverSocket = null;
-			_receiver = null;
+//			_receiver = null;
 		}
 	}
 	
@@ -192,149 +192,149 @@ public class InternalTCPComm extends IComm{
 		}
 	}
 	
-	public void treatInternalMessage(ObjectInputStream ois, ObjectOutputStream oos) throws IOException
-	{
-		int messageType = ois.readInt();
-		
-		switch(messageType)
-		{
-		case 8: 
-			synchronize(ois,oos); //done
-			break;
-		default:
-			break;
-		}
-	}
+//	public void treatInternalMessage(ObjectInputStream ois, ObjectOutputStream oos) throws IOException
+//	{
+//		int messageType = ois.readInt();
+//		
+//		switch(messageType)
+//		{
+//		case 8: 
+//			synchronize(ois,oos); //done
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 
-	public void synchronize(int myId, long[] versionVector)
-	{
-		if(_serversAddr.length == 1) return;
-		try
-		{
-			HInternalComm[] servers = new HInternalComm[_serversAddr.length];
-			for(int nServer = 1; nServer < _serversAddr.length; nServer++)
-			{
-				servers[nServer] = new HInternalComm(_serversAddr[nServer],myId,versionVector);
-				servers[nServer].start();
-			}
-			
-			for(int nServer = 1; nServer < servers.length; nServer++)
-			{
-				servers[nServer].join();
-			}
-		}catch(IOException ioe)
-		{
-			System.out.println("InternalTCPComm - synchronize() thrown IOException.");
-		} catch (InterruptedException e) {
-			System.out.println("InternalTCPComm - synchronize() thrown InterruptedException.");
-		}
-	}
-	
-	class HInternalComm extends Thread
-	{
-		private final int SYNCHRONIZE_MESSAGE_ID = 8;
-		
-		public Socket _server;
-		public ObjectInputStream _ois;
-		public ObjectOutputStream _oos;
-		public int _myId;
-		public long[] _versionVector;
-		
-		HInternalComm(String addr, int myid, long[] vector) throws NumberFormatException, UnknownHostException, IOException
-		{
-			String[] addrInfo = addr.split(":");
-			_server = new Socket(addrInfo[0], Integer.parseInt(addrInfo[1]));
-			Utils.setSocketProperties(_server);
-			_oos = new ObjectOutputStream(_server.getOutputStream());
-			_oos.flush();
-			_ois = new ObjectInputStream(_server.getInputStream());
-			_myId = myid;
-			_versionVector = vector;
-		}
-		
-		private void startSyncProtocol() throws IOException
-		{
-			System.out.println("\n= Starting Sync Protocol =\n");
-			
-			_oos.writeInt(SYNCHRONIZE_MESSAGE_ID);
-			_oos.writeInt(_myId);
-			_oos.writeInt(_versionVector.length);
-			for(int pos = 0; pos < _versionVector.length; pos++)
-				_oos.writeLong(_versionVector[pos]);
-			_oos.flush();
-		}
-		
-		private Map<Integer,Long> receiveRequest() throws IOException
-		{
-//			//read info
-//			System.out.println("\n= Receive Request from other server =\n");
-			
-			int size = _ois.readInt();
-			Map<Integer,Long> requestList = new HashMap<Integer,Long>(size);
-			for(int pos = 0; pos < size; pos++) 
-				requestList.put(_ois.readInt(),_ois.readLong());
-			
-//			System.out.println("=======================");
-//			System.out.println("|| 	 Request List 	 ||");
-//			System.out.println("=======================");
-//			System.out.println("SyncMap size: "+requestList.size());
-//			for(Map.Entry<Integer,Long> entry : requestList.entrySet())
-//				System.out.println("ClientId: "+entry.getKey()+", Timestamp: "+entry.getValue());
-			
-			return requestList;
-		}
-		
-		private void writeOperationsToSync(Map<Integer,List<ILogOperation>> syncMap) throws IOException
-		{			
-			//write results
-//			System.out.println("\n= Write Operations to Synchronize =\n");
-			
-			_oos.writeInt(syncMap.size());
-			for(Map.Entry<Integer, List<ILogOperation>> entry : syncMap.entrySet())
-			{
-				_oos.writeInt(entry.getKey());
-				_oos.writeInt(entry.getValue().size());
-				for(ILogOperation op : entry.getValue()) op.serialize(_oos);
-			}
-			_oos.flush();
-		}
-		
-		public void run()
-		{
-			try {
-				startSyncProtocol();
-				boolean otherServerUpdated = _ois.readBoolean();
-//				System.out.println("Updated? : "+otherServerUpdated); 
-				if(!otherServerUpdated)
-				{
-					Map<Integer,List<ILogOperation>> opsToSync = _dispatcher.getSyncOperations(receiveRequest());
-					writeOperationsToSync(opsToSync);
-				}
-				System.out.println("\n= Finishing Sync Protocol =\n");
-			} catch (IOException e) {
-				System.out.println("HInternalComm - run() thrown IOException");
-			} catch (InterruptedException e) {
-				System.out.println("HInternalComm - run() thrown InterruptedException");
-			}
-			finally
-			{
-				closeConnection();
-			}
-		}
-		
-		public void closeConnection()
-		{
-			try {
-				_oos.flush();
-				_oos.close();
-				_ois.close();
-				_server.close();
-			} catch (IOException e) {
-				System.out.println("HInternalComm - closeConnection() thrown IOException");
-			}
-
-		}
-	}
+//	public void synchronize(int myId, long[] versionVector)
+//	{
+//		if(_serversAddr.length == 1) return;
+//		try
+//		{
+//			HInternalComm[] servers = new HInternalComm[_serversAddr.length];
+//			for(int nServer = 1; nServer < _serversAddr.length; nServer++)
+//			{
+//				servers[nServer] = new HInternalComm(_serversAddr[nServer],myId,versionVector);
+//				servers[nServer].start();
+//			}
+//			
+//			for(int nServer = 1; nServer < servers.length; nServer++)
+//			{
+//				servers[nServer].join();
+//			}
+//		}catch(IOException ioe)
+//		{
+//			System.out.println("InternalTCPComm - synchronize() thrown IOException.");
+//		} catch (InterruptedException e) {
+//			System.out.println("InternalTCPComm - synchronize() thrown InterruptedException.");
+//		}
+//	}
+//	
+//	class HInternalComm extends Thread
+//	{
+//		private final int SYNCHRONIZE_MESSAGE_ID = 8;
+//		
+//		public Socket _server;
+//		public ObjectInputStream _ois;
+//		public ObjectOutputStream _oos;
+//		public int _myId;
+//		public long[] _versionVector;
+//		
+//		HInternalComm(String addr, int myid, long[] vector) throws NumberFormatException, UnknownHostException, IOException
+//		{
+//			String[] addrInfo = addr.split(":");
+//			_server = new Socket(addrInfo[0], Integer.parseInt(addrInfo[1]));
+//			Utils.setSocketProperties(_server);
+//			_oos = new ObjectOutputStream(_server.getOutputStream());
+//			_oos.flush();
+//			_ois = new ObjectInputStream(_server.getInputStream());
+//			_myId = myid;
+//			_versionVector = vector;
+//		}
+//		
+//		private void startSyncProtocol() throws IOException
+//		{
+//			System.out.println("\n= Starting Sync Protocol =\n");
+//			
+//			_oos.writeInt(SYNCHRONIZE_MESSAGE_ID);
+//			_oos.writeInt(_myId);
+//			_oos.writeInt(_versionVector.length);
+//			for(int pos = 0; pos < _versionVector.length; pos++)
+//				_oos.writeLong(_versionVector[pos]);
+//			_oos.flush();
+//		}
+//		
+//		private Map<Integer,Long> receiveRequest() throws IOException
+//		{
+////			//read info
+////			System.out.println("\n= Receive Request from other server =\n");
+//			
+//			int size = _ois.readInt();
+//			Map<Integer,Long> requestList = new HashMap<Integer,Long>(size);
+//			for(int pos = 0; pos < size; pos++) 
+//				requestList.put(_ois.readInt(),_ois.readLong());
+//			
+////			System.out.println("=======================");
+////			System.out.println("|| 	 Request List 	 ||");
+////			System.out.println("=======================");
+////			System.out.println("SyncMap size: "+requestList.size());
+////			for(Map.Entry<Integer,Long> entry : requestList.entrySet())
+////				System.out.println("ClientId: "+entry.getKey()+", Timestamp: "+entry.getValue());
+//			
+//			return requestList;
+//		}
+//		
+//		private void writeOperationsToSync(Map<Integer,List<ILogOperation>> syncMap) throws IOException
+//		{			
+//			//write results
+////			System.out.println("\n= Write Operations to Synchronize =\n");
+//			
+//			_oos.writeInt(syncMap.size());
+//			for(Map.Entry<Integer, List<ILogOperation>> entry : syncMap.entrySet())
+//			{
+//				_oos.writeInt(entry.getKey());
+//				_oos.writeInt(entry.getValue().size());
+//				for(ILogOperation op : entry.getValue()) op.serialize(_oos);
+//			}
+//			_oos.flush();
+//		}
+//		
+//		public void run()
+//		{
+//			try {
+//				startSyncProtocol();
+//				boolean otherServerUpdated = _ois.readBoolean();
+////				System.out.println("Updated? : "+otherServerUpdated); 
+//				if(!otherServerUpdated)
+//				{
+//					Map<Integer,List<ILogOperation>> opsToSync = _dispatcher.getSyncOperations(receiveRequest());
+//					writeOperationsToSync(opsToSync);
+//				}
+//				System.out.println("\n= Finishing Sync Protocol =\n");
+//			} catch (IOException e) {
+//				System.out.println("HInternalComm - run() thrown IOException");
+//			} catch (InterruptedException e) {
+//				System.out.println("HInternalComm - run() thrown InterruptedException");
+//			}
+//			finally
+//			{
+//				closeConnection();
+//			}
+//		}
+//		
+//		public void closeConnection()
+//		{
+//			try {
+//				_oos.flush();
+//				_oos.close();
+//				_ois.close();
+//				_server.close();
+//			} catch (IOException e) {
+//				System.out.println("HInternalComm - closeConnection() thrown IOException");
+//			}
+//
+//		}
+//	}
 	
 	
 //	/**
@@ -591,50 +591,50 @@ public class InternalTCPComm extends IComm{
 	 * @author andre_goncalves@di
 	 *
 	 */
-	class HReceiver extends Thread
-	{
-		public void run()
-		{
-			try {
-				Socket server = null;
-				ObjectInputStream ois = null;
-				ObjectOutputStream oos = null;
-				
-				while(true)
-				{
-					System.out.println("Waiting...");
-					server = _serverSocket.accept();
-					System.out.println("Connected...");
-					Utils.setSocketProperties(server);
-
-					ois = new ObjectInputStream(server.getInputStream());
-					oos = new ObjectOutputStream(server.getOutputStream());
-					
-					treatInternalMessage(ois,oos);
-					closeConnection(ois,oos,server);
-//					HInternalComm hclient = new HInternalComm(server); //TODO: See if it is necessary to set new properties. 
-//					hclient.start();
-				}
-			} catch (IOException e) { //TODO: See this...
-				//e.printStackTrace();
-			}
-		}
-		
-		public void closeConnection(ObjectInputStream ois, ObjectOutputStream oos, Socket socket)
-		{
-			System.out.println("Closing internal connection...");
-			try {
-				oos.flush();
-				oos.close();
-				ois.close();
-				socket.close();
-				System.out.println("Client connection closed...");
-			} catch (IOException e) {
-				//e.printStackTrace();
-			}
-//			} catch (DBException e) {
-//				e.printStackTrace();
+//	class HReceiver extends Thread
+//	{
+//		public void run()
+//		{
+//			try {
+//				Socket server = null;
+//				ObjectInputStream ois = null;
+//				ObjectOutputStream oos = null;
+//				
+//				while(true)
+//				{
+//					System.out.println("Waiting...");
+//					server = _serverSocket.accept();
+//					System.out.println("Connected...");
+//					Utils.setSocketProperties(server);
+//
+//					ois = new ObjectInputStream(server.getInputStream());
+//					oos = new ObjectOutputStream(server.getOutputStream());
+//					
+//					treatInternalMessage(ois,oos);
+//					closeConnection(ois,oos,server);
+////					HInternalComm hclient = new HInternalComm(server); //TODO: See if it is necessary to set new properties. 
+////					hclient.start();
+//				}
+//			} catch (IOException e) { //TODO: See this...
+//				//e.printStackTrace();
 //			}
-		}
-	}
+//		}
+//		
+//		public void closeConnection(ObjectInputStream ois, ObjectOutputStream oos, Socket socket)
+//		{
+//			System.out.println("Closing internal connection...");
+//			try {
+//				oos.flush();
+//				oos.close();
+//				ois.close();
+//				socket.close();
+//				System.out.println("Client connection closed...");
+//			} catch (IOException e) {
+//				//e.printStackTrace();
+//			}
+////			} catch (DBException e) {
+////				e.printStackTrace();
+////			}
+//		}
+//	}
 }

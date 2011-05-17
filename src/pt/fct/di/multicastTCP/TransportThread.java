@@ -38,6 +38,7 @@ public class TransportThread extends Thread{
 	
 	public void close()
 	{
+		System.out.println("Operations left in queue for server "+_socket.getRemoteAddress()+": "+_opQueue.getSize());
 //		System.out.println("Closing TransportThread!!");
 		_close = true;
 		_opQueue.close();

@@ -191,6 +191,11 @@ public class TSocket {
 		//else return "does not exist";
 	}
 	
+	public String getRemoteAddress()
+	{
+		return _host+":"+_port;
+	}
+	
 	public void sendMessage(IClientOperation op) throws TCPException
 	{
 	  try {

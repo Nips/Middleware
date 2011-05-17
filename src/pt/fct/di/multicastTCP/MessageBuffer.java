@@ -43,4 +43,8 @@ public class MessageBuffer {
 		return _opsQueue.take();
 	}
 	
+	public int getSize()
+	{
+		return _opsQueue.size();
+	}
 }

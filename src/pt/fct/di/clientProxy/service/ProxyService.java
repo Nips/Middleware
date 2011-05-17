@@ -77,7 +77,11 @@ public class ProxyService implements IService{
 	{
 		synchronized(_ownInstance)
 		{
-			if(_ownInstance._comm == null) _ownInstance.init();
+			if(_ownInstance._comm == null)
+			{
+				System.out.println("New Instance");
+				_ownInstance.init();
+			}
 			return _ownInstance;
 		}
 	}

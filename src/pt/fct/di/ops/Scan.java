@@ -19,14 +19,14 @@ public class Scan extends ClientOperation {
 	private int _recordCount = RECORDS_TO_READ;
 	private FieldsOrValues _fields;
 	
-	/**
-	 * Creates an empty Scan operation
-	 */
-	public Scan()
-	{
-		super();
-		_fields = new FieldsOrValues();
-	}
+//	/**
+//	 * Creates an empty Scan operation
+//	 */
+//	public Scan()
+//	{
+//		super();
+//		_fields = new FieldsOrValues();
+//	}
 	
 	/**
 	 * Builds a new Scan operation with the column family and start row key to access. Reads many following keys 

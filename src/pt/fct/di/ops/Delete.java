@@ -20,14 +20,14 @@ public class Delete extends ClientOperation implements LoggableOperation{
 	
 	private FieldsOrValues _fields;
 	
-	/**
-	 * Creates an empty Delete operation
-	 */
-	public Delete()
-	{
-		super();
-		_fields = new FieldsOrValues();
-	}
+//	/**
+//	 * Creates an empty Delete operation
+//	 */
+//	public Delete()
+//	{
+//		super();
+//		_fields = new FieldsOrValues();
+//	}
 	
 //	/**
 //	 * Builds a new Delete operation with the column family to access and row key to delete.
@@ -262,12 +262,12 @@ public class Delete extends ClientOperation implements LoggableOperation{
 
 	@Override
 	public ILogOperation convertToLog() {
-		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]+1);
+		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
 	}
 	
 	@Override
 	public ILogOperation convertToLog(DB remotedb) {
-		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]+1);
+		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
 	}
 
 	@Override

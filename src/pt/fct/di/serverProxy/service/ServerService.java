@@ -146,17 +146,17 @@ public class ServerService {
 		}
 	}
 	
-	/**
-	 * Compares if the client's timer differs to much from the server's.
-	 * @param op
-	 * @return
-	 */
-	public boolean verifyOperationTimeOut(long opTime) //TODO: See if this is right
-	{	
-		//boolean olderThanSyncPoint = false;/*_sequencialLog.getFirst().compareTo(op) > 0;*/  
-		return /*olderThanSyncPoint ||*/ _timer.verifyExceededTime(opTime);
-		//return false;
-	}
+//	/**
+//	 * Compares if the client's timer differs to much from the server's.
+//	 * @param op
+//	 * @return
+//	 */
+//	public boolean verifyOperationTimeOut(long opTime) //TODO: See if this is right
+//	{	
+//		//boolean olderThanSyncPoint = false;/*_sequencialLog.getFirst().compareTo(op) > 0;*/  
+//		return /*olderThanSyncPoint || _timer.verifyExceededTime(opTime);
+//		//return false;
+//	}
 	
 	/**
 	 * The order phase allows us to known when the operation in argument should have appeared in the log, assuming that is
@@ -212,7 +212,7 @@ public class ServerService {
 				//and must be deleted from the log. A NoOp operation is returned.
 				if(newLogOpFields.isEmpty())
 				{
-					while(jumps > 0){ jumps--; it.previous(); } //Change iterator pointer to the operation to remove
+					while(jumps > -1){ jumps--; it.previous(); } //Change iterator pointer to the operation to remove
 					it.remove(); //Remove resultOp from log
 					result = new UpdateResult(0);
 					break;
@@ -325,11 +325,10 @@ public class ServerService {
 //		System.out.println(op.toString());
 		UpdateResult result = null;
 		int opType = op.getType();
-		long time = getTime();
-//		System.out.println("Op timestamp: "+time);
+//		System.out.println("OpType: "+opType);
 		if(opType == 1)
 			result = _db.put(op.getColumnFamily(), op.getRowKey(), op.getFieldsOrValues().getValues(), 
-				time, op.getConsistency());
+				getTime(), op.getConsistency());
 		else if(opType == 2)
 			result = _db.delete(op.getColumnFamily(), op.getRowKey(), op.getFieldsOrValues().getFields(), 
 				getTime(), op.getConsistency());
@@ -360,10 +359,10 @@ public class ServerService {
 		return _timer.getTime(); 
 	}
 	
-	public void setTime(long time)
-	{
-		_timer.setNewTime(time);
-	}
+//	public void setTime(long time)
+//	{
+//		_timer.setNewTime(time);
+//	}
 	
 	public void deleteOldOperationsFromLog(long endTimestamp)
 	{

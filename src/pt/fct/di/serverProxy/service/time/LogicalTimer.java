@@ -39,13 +39,13 @@ public class LogicalTimer implements Timer{
 		_timer.set(initialTime);
 	}
 	
-	/**
-	 * Verifies if a certain client's time, given in argument, differs too much from the server's. 
-	 */
-	public boolean verifyExceededTime(long time)
-	{
-//		long diff = Math.abs(_timer - time);
-//		return diff >= _timeout /*|| diff >= _threshold*/;
-		return false;
-	}
+//	/**
+//	 * Verifies if a certain client's time, given in argument, differs too much from the server's. 
+//	 */
+//	public boolean verifyExceededTime(long time)
+//	{
+////		long diff = Math.abs(_timer - time);
+////		return diff >= _timeout /*|| diff >= _threshold*/;
+//		return false;
+//	}
 }

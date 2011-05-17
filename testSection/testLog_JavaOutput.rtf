@@ -1,248 +1,993 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
 {\fonttbl\f0\fnil\fcharset0 Monaco;}
 {\colortbl;\red255\green255\blue255;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\paperw11900\paperh16840\margl1440\margr1440\vieww20440\viewh16120\viewkind0
 \deftab720
 \pard\pardeftab720
 
-\f0\fs22 \cf0 put 1 f1 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 1 \
+\f0\fs22 \cf0 put 1 1 f1 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 1 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-put 2 f2 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 2 \
+\
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+put 2 2 f2 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 2 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-put 3 f1 r2 a1 v1 a4 v4 a5 v5 3 \
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+put 3 3 f1 r2 a1 v1 a4 v4 a5 v5 3 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
-\
-put 4 f1 r1 a6 v6 4 \
+put 1 4 f1 r1 a6 v6 4 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
 ******************************************\
-\
-put 5 f2 r1 a2 v7 5 \
+put 2 5 f2 r1 a2 v7 5 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a1 v1, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+delete 3 6 f1 r2 a1 a5 6 \
+\
+Deletion return code: 1.0\
+=================================================================\
+||                          Log Read                           ||\
+=================================================================\
+\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-delete 6 f1 r2 a1 a5 6 \
+\
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+put 1 7 f1 r1 a3 v8 a6 v10 a7 v11 3 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
 ******************************************\
-\
-put 7 f1 r1 a3 v8 a6 v10 a7 v11 3 \
+put 1 8 f1 r1 a3 v12 a6 v13 a7 v14 a8 v15 a9 v16 2 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= ( a4 v4,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+delete 3 9 f1 r2 a1 a4 5 \
+\
+Deletion return code: 1.0\
+=================================================================\
+||                          Log Read                           ||\
+=================================================================\
+\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-put 8 f1 r1 a3 v12 a6 v13 a7 v14 a8 v15 a9 v16 2 \
+\
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+delete 2 10 f2 r1 a2 a1 3 \
+\
+Deletion return code: 1.0\
+=================================================================\
+||                          Log Read                           ||\
+=================================================================\
+\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a2 v2, a3 v8, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a3 v8, a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+delete 1 11 f1 r1 a2 a3 a4 6 \
+\
+Deletion return code: 1.0\
+=================================================================\
+||                          Log Read                           ||\
+=================================================================\
+\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v5,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+\
+\
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+put 1 12 f1 r1 a3 v17 a4 v18 a5 v19 5 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+\}\
 ******************************************\
-\
-delete 9 f1 r2 a1 a4 5 \
+put 3 13 f1 r2 a6 v20 7 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
-\
-delete 10 f2 r1 a2 a1 3 \
+put 3 14 f1 r2 a1 v1 a5 v4 a6 v1 4 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Delete [_id=10, _timestamp=3, _columnFamily=f2, _rowKey=r1, _fields= ( a1  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
-\
-delete 11 f1 r1 a2 a3 a4 6 \
+put 2 15 f2 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 2 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ],  Delete [_id=11, _timestamp=6, _columnFamily=f1, _rowKey=r1, _fields= ( a2 a3 a4  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Delete [_id=10, _timestamp=3, _columnFamily=f2, _rowKey=r1, _fields= ( a1  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
-\
-put 12 f1 r1 a3 v17 a4 v18 a5 v19 5 \
+put 2 16 f2 r1 a1 v1 a2 v2 a3 v3 a4 v4 a5 v5 1 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ],  Put [_id=12, _timestamp=5, _columnFamily=f1, _rowKey=r1, _fields= ( a5  ) ],  Delete [_id=11, _timestamp=6, _columnFamily=f1, _rowKey=r1, _fields= ( a2 a3 a4  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Delete [_id=10, _timestamp=3, _columnFamily=f2, _rowKey=r1, _fields= ( a1  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
-\
-put 13 f1 r2 a6 v20 7 \
+put 2 17 f2 r1 a20 v3 1 \
 \
 =================================================================\
 ||                          Log Read                           ||\
 =================================================================\
 \
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ],  Put [_id=12, _timestamp=5, _columnFamily=f1, _rowKey=r1, _fields= ( a5  ) ],  Delete [_id=11, _timestamp=6, _columnFamily=f1, _rowKey=r1, _fields= ( a2 a3 a4  ) ], \}\
-\
+		======================		\
+		||  Structured Log  ||		\
+		======================		\
+Family: f1 and row key: r1 =>   \{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Family: f1 and row key: r2 =>   \{ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
+******************************************\
+Family: f2 and row key: r1 =>   \{ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=1, _fields= ( a20  ) _values= ( a20 v3,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
 ******************************************\
 \
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ],  Put [_id=13, _timestamp=7, _columnFamily=f1, _rowKey=r2, _fields= ( a6  ) ], \}\
 \
+		======================		\
+		||    Client Log    ||		\
+		======================		\
+Client Id => \{  Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+ Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=1, _fields= ( a20  ) _values= ( a20 v3,  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+ Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+ Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+\}\
+******************************************\
+Client Id => \{  Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+ Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+ Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
 \
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Delete [_id=10, _timestamp=3, _columnFamily=f2, _rowKey=r1, _fields= ( a1  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
 \
+		======================		\
+		||  Sequencial Log  ||		\
+		======================		\
+\{ Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=1, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a1 v1, a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=1, _fields= ( a20  ) _values= ( a20 v3,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=2, _fields= ( a9 a8  ) _values= ( a9 v16, a8 v15,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=2, _fields= ( a1 a2 a3 a4 a5  ) _values= ( a2 v7, a3 v3, a4 v4, a5 v5,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=3, _fields= ( a3 a7  ) _values= ( a7 v11,  ) ], \
+Delete [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=3, _fields= ( a1  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=3, _fields= ( a1 a4 a5  ) _values= (  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=4, _fields= ( a6  ) _values= ( a6 v6,  ) ], \
+Put [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=5, _fields= ( a5  ) _values= ( a5 v19,  ) ], \
+Put [_id=2, _columnFamily=f2, _rowKey= r1, _timestamp=5, _fields= ( a2  ) _values= ( a2 v7,  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=5, _fields= ( a4  ) ], \
+Delete [_id=1, _columnFamily=f1, _rowKey= r1, _timestamp=6, _fields= ( a2 a3 a4  ) ], \
+Delete [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=6, _fields= ( a1 a5  ) ], \
+Put [_id=3, _columnFamily=f1, _rowKey= r2, _timestamp=7, _fields= ( a6  ) _values= ( a6 v20,  ) ], \
+\}\
 ******************************************\
-\
-put 14 f1 r2 a1 v1 a5 v4 4 \
-\
-=================================================================\
-||                          Log Read                           ||\
-=================================================================\
-\
-Family: f1 and row key: r1 =>   \{ Put [_id=1, _timestamp=1, _columnFamily=f1, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Put [_id=8, _timestamp=2, _columnFamily=f1, _rowKey=r1, _fields= ( a9 a8  ) ],  Put [_id=7, _timestamp=3, _columnFamily=f1, _rowKey=r1, _fields= ( a3 a7  ) ],  Put [_id=4, _timestamp=4, _columnFamily=f1, _rowKey=r1, _fields= ( a6  ) ],  Put [_id=12, _timestamp=5, _columnFamily=f1, _rowKey=r1, _fields= ( a5  ) ],  Delete [_id=11, _timestamp=6, _columnFamily=f1, _rowKey=r1, _fields= ( a2 a3 a4  ) ], \}\
-\
-******************************************\
-\
-Family: f1 and row key: r2 =>   \{ Put [_id=3, _timestamp=3, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a4 a5  ) ],  Delete [_id=9, _timestamp=5, _columnFamily=f1, _rowKey=r2, _fields= ( a4  ) ],  Delete [_id=6, _timestamp=6, _columnFamily=f1, _rowKey=r2, _fields= ( a1 a5  ) ],  Put [_id=13, _timestamp=7, _columnFamily=f1, _rowKey=r2, _fields= ( a6  ) ], \}\
-\
-******************************************\
-\
-Family: f2 and row key: r1 =>   \{ Put [_id=2, _timestamp=2, _columnFamily=f2, _rowKey=r1, _fields= ( a1 a2 a3 a4 a5  ) ],  Delete [_id=10, _timestamp=3, _columnFamily=f2, _rowKey=r1, _fields= ( a1  ) ],  Put [_id=5, _timestamp=5, _columnFamily=f2, _rowKey=r1, _fields= ( a2  ) ], \}\
-\
-******************************************\
-\
 }

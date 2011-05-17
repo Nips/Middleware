@@ -18,14 +18,14 @@ public class Read extends ClientOperation {
 	
 	private FieldsOrValues _fields;
 	
-	/**
-	 * Creates an empty Insert operation
-	 */
-	public Read()
-	{
-		super();
-		_fields = new FieldsOrValues();
-	}
+//	/**
+//	 * Creates an empty Insert operation
+//	 */
+//	public Read()
+//	{
+//		super();
+//		_fields = new FieldsOrValues();
+//	}
 	
 //	/**
 //	 * Builds a new Read operation with the column family and row key to access.

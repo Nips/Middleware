@@ -11,5 +11,5 @@ public interface Timer {
 	public void setNewTime(long timer);
 	public void resetTimer(long initialTime);
 	
-	public boolean verifyExceededTime(long time);
+//	public boolean verifyExceededTime(long time);
 }

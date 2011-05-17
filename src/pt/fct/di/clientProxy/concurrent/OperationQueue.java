@@ -60,4 +60,9 @@ public class OperationQueue {
 		return this._opsQueue.isEmpty();
 	}
 	
+	public int getSize()
+	{
+		return _opsQueue.size();
+	}
+	
 }

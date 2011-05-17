@@ -60,17 +60,20 @@ public class SequencialLog {
 	
 	public String toString()
 	{
+		PriorityQueue<ILogOperation> aux = new PriorityQueue<ILogOperation>(_sequencialLog.size());
 		String msg = "		======================		\n";
 		msg += 		 "		||  Sequencial Log  ||		\n";
 		msg += 		 "		======================		\n";
-		Iterator<ILogOperation> it = _sequencialLog.iterator();
+//		Iterator<ILogOperation> it = _sequencialLog.iterator();
 		msg += "{ ";
-		while(it.hasNext())
+		while(!_sequencialLog.isEmpty())
 		{
-			ILogOperation op = it.next();
+			ILogOperation op = _sequencialLog.poll();
 			msg += op.toString();
 			msg += ", \n";
+			aux.offer(op);
 		}
+		_sequencialLog = aux;
 		msg += "}\n";
 		msg += "******************************************";
 		msg += "";

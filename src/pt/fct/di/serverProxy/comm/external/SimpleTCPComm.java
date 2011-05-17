@@ -37,6 +37,8 @@ public class SimpleTCPComm extends IServerComm{
 	 */
 	private HReceiver _receiver = null;
 	
+	Map<Integer, Integer> _returnedCodes;
+	
 	public void initServer() throws CommException
 	{
 		//init();
@@ -46,6 +48,7 @@ public class SimpleTCPComm extends IServerComm{
 		System.out.println("Binded to: "+addr+":"+port);
 		int serverport = Integer.parseInt(port);
 		
+		_returnedCodes = new HashMap<Integer, Integer>();
 		try {
 			this._serverSocket = new ServerSocket();
 			this._serverSocket.bind(new InetSocketAddress(addr, serverport));
@@ -64,6 +67,11 @@ public class SimpleTCPComm extends IServerComm{
 	
 	public void cleanup()
 	{
+		System.out.print("ReturnedCodes:\n");
+		synchronized(_returnedCodes)
+		{
+			for(Map.Entry<Integer, Integer> entry : _returnedCodes.entrySet()) System.out.println("Code - "+entry.getKey()+", Value - "+entry.getValue());
+		}
 //		_dispatcher.close();
 		try {
 			_serverSocket.close();
@@ -120,8 +128,6 @@ public class SimpleTCPComm extends IServerComm{
 		 */
 		int _countReads = 0;
 		
-		Map<Integer, int[]> _returnedCodes;
-		
 //		/**
 //		 * Database abstraction layer
 //		 */
@@ -139,8 +145,6 @@ public class SimpleTCPComm extends IServerComm{
 			this._outputStream.flush();
 			this._inputStream = new ObjectInputStream(cl.getInputStream());
 			this._connected = true;
-			
-			this._returnedCodes = new HashMap<Integer, int[]>();
 			
 //			try {
 				_dispatcher = getDispatcher();
@@ -186,6 +190,15 @@ public class SimpleTCPComm extends IServerComm{
 				try{
 					op = readOp(_inputStream);
 					result = _dispatcher.executeClientOperation(op);
+					synchronized(_returnedCodes)
+					{
+						if(!_returnedCodes.containsKey(result.getCode())) _returnedCodes.put(result.getCode(), 1);
+						else
+						{
+							int occurs = _returnedCodes.get(result.getCode()) + 1;
+							_returnedCodes.put(result.getCode(), occurs);
+						}
+					}
 					sendMessage(result);
 				} catch (IOException e) {
 					//TODO Auto-generated catch block

@@ -61,6 +61,7 @@ public class MessageDispatcher {
 			if(result.getCode() > 0) result.setVersionVector(_sync.updateAndGetVector(opId, op.getVersionVector()[opId]));
 			else
 			{
+				if(result.getCode() < 0 ) System.out.println("Error somewhere on the system");
 				_noOpOccurencies.incrementAndGet();
 				result.setVersionVector(_sync.getOwnVector());
 			}
@@ -87,8 +88,8 @@ public class MessageDispatcher {
 //		_syncPhase.set(true);
 //		while(_activeClients.get() > 0 && _getInfoPhase.get()) _servercondition.await();
 		
-		boolean updated = _sync.verifyUpDate(otherVector, syncList);
-		_sync.updateVector(serverId, otherVector);
+//		boolean updated = _sync.verifyUpDate(otherVector, syncList);
+//		_sync.updateVector(serverId, otherVector);
 		
 //		if(updated)
 //		{
@@ -96,7 +97,8 @@ public class MessageDispatcher {
 //			_syncPhase.set(false);
 //			_clientcondition.signalAll();
 //		}
-		return updated;
+//		return updated;
+		return true;
 	}
 	
 	public boolean applyOperations(Map<Integer,List<ILogOperation>> syncMap)
@@ -116,7 +118,7 @@ public class MessageDispatcher {
 //				for(Map.Entry<String, String> read : res.getValues().entrySet())
 //					System.out.println("Field: "+read.getKey()+" Value: "+read.getValue());
 			}
-			if(successfulOps > 0) _sync.updateClientVersion(clientId, (long)successfulOps);
+//			if(successfulOps > 0) _sync.updateClientVersion(clientId, (long)successfulOps);
 		}
 		
 //		_service.logToString();

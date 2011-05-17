@@ -274,7 +274,7 @@ public class PutLog extends LogOperation{
 	@Override
 	public String toString() {
 		return "Put [_id=" + _id + ", _columnFamily="+ _columnFamily +", _rowKey= "+ _rowKey + ", _timestamp="+_timestamp+", " +
-				"_fields=" + readFields() + "_syncValues=" + readValues() + "]";
+				"_fields=" + readFields() + "_values=" + readValues() + "]";
 	}
 
 	@Override

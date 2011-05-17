@@ -20,14 +20,14 @@ public class Put extends ClientOperation implements LoggableOperation{
 	private final static int TYPE = 1; //Update or Read?
 	private FieldsOrValues _values;
 	
-	/**
-	 * Creates an empty Insert operation
-	 */
-	public Put()
-	{
-		super();
-		_values = new FieldsOrValues();
-	}
+//	/**
+//	 * Creates an empty Insert operation
+//	 */
+//	public Put()
+//	{
+//		super();
+//		_values = new FieldsOrValues();
+//	}
 
 	/**
 	 * Builds a new Put operation with the column family to access and row key with respective values to insert.
