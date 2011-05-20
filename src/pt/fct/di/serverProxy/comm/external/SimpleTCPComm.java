@@ -116,17 +116,15 @@ public class SimpleTCPComm extends IServerComm{
 		 */
 		boolean _connected = false;
 		
-//		int _countTout = 0;
+//		/**
+//		 * Statistics - Count number of successful writes done in this DB. 
+//		 */
+//		int _countWrites = 0;
 		
-		/**
-		 * Statistics - Count number of successful writes done in this DB. 
-		 */
-		int _countWrites = 0;
-		
-		/**
-		 * Statistics - Count number of successful reads done in this DB. 
-		 */
-		int _countReads = 0;
+//		/**
+//		 * Statistics - Count number of successful reads done in this DB. 
+//		 */
+//		int _countReads = 0;
 		
 //		/**
 //		 * Database abstraction layer
@@ -175,13 +173,13 @@ public class SimpleTCPComm extends IServerComm{
 
 			if(type == 1) 
 			{
-				_countWrites++;
+//				_countWrites++; testing mode!
 				return new Put(in);
 			}
 			else if(type == 2) return new Delete(in);
 			else if(type == 3)
 			{
-				_countReads++;
+//				_countReads++; //testing mode!
 				return new Read(in);
 			}
 			else if(type == 4) return new Scan(in);
@@ -284,8 +282,8 @@ public class SimpleTCPComm extends IServerComm{
 		
 		public void closeConnection()
 		{
-			System.out.println("Total of writes seen: "+_countWrites);
-			System.out.println("Total of reads seen: "+_countReads);
+//			System.out.println("Total of writes seen: "+_countWrites); //testing mode!
+//			System.out.println("Total of reads seen: "+_countReads); //testing mode!
 			System.out.println("Closing client connection...");
 			try {
 				//_db.cleanup();

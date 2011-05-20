@@ -22,43 +22,42 @@ public class VersionVector {
 	private final int DEFAULT_SIZE = 10;
 	
 	//Vector Object...
-//	private AtomicLong[] _vector;
-	private long[] _vector;
+	private AtomicLong[] _vector;
+//	private long[] _vector;
 	
 	private AtomicInteger nUpdates = new AtomicInteger(0); //For testing porposes
 	
 	public VersionVector()
 	{
-		_vector = new long[DEFAULT_SIZE];
-		System.out.println("New instance of Version Vector");
-//		_vector = new AtomicLong[DEFAULT_SIZE];
-//		for(int pos = 0; pos < DEFAULT_SIZE; pos++) _vector[pos] = new AtomicLong(0);
+//		_vector = new long[DEFAULT_SIZE];
+		_vector = new AtomicLong[DEFAULT_SIZE];
+		for(int pos = 0; pos < DEFAULT_SIZE; pos++) _vector[pos] = new AtomicLong(0);
 	}
 	
 	public VersionVector(int size)
 	{
-		_vector = new long[size];
-		System.out.println("New instance of Version Vector");
-//		_vector = new AtomicLong[size];
-//		for(int pos = 0; pos < size; pos++) _vector[pos] = new AtomicLong(0);
+//		_vector = new long[size];
+		_vector = new AtomicLong[size];
+		for(int pos = 0; pos < size; pos++) _vector[pos] = new AtomicLong(0);
 	}
 	
+	//TODO: Is this useful? Maybe to update the vectors received by other servers
 	public void setNewVector(long[] otherVector)
 	{
-		_vector = otherVector;
-//		AtomicLong[] aux = new AtomicLong[otherVector.length];
-//		for(int pos=0; pos < otherVector.length; pos++)
-//			aux[pos] = new AtomicLong(otherVector[pos]);
-//		_vector = aux;
+//		_vector = otherVector;
+		AtomicLong[] aux = new AtomicLong[otherVector.length];
+		for(int pos=0; pos < otherVector.length; pos++)
+			aux[pos] = new AtomicLong(otherVector[pos]);
+		_vector = aux;
 	}
 	
-	public synchronized long[] getVector()
+	public long[] getVector()
 	{
-		long[] clone = _vector.clone();
-		return clone;
-//		long[] aux = new long[_vector.length];
-//		for(int pos=0; pos < _vector.length; pos++ ) aux[pos] = _vector[pos].get();
-//		return aux;
+//		long[] clone = _vector.clone();
+//		return clone;
+		long[] aux = new long[_vector.length];
+		for(int pos=0; pos < aux.length; pos++ ) aux[pos] = _vector[pos].get();
+		return aux;
 	}
 	
 //	public void registerClient(int id)
@@ -71,48 +70,42 @@ public class VersionVector {
 //		_vector[id] = 0;
 //	}
 	
-	public synchronized long getClientVersion(int id)
+	public long getClientVersion(int id)
 	{
-		return _vector[id];
-//		return _vector[id].get();
+//		return _vector[id];
+		return _vector[id].get();
 	}
 	
-	public synchronized long setClientVersion(int id)
+	//TODO: Is this useful?
+	public long setClientVersion(int id)
 	{
 //		_vector[id] = _vector[id] + 1;
-		return _vector[id];
+//		return _vector[id];
 //		return _vector[id].incrementAndGet();
+		return -1;
 	}
 	
-	public synchronized long setClientVersion(int id, long value)
+	public long setClientVersion(int id, long value)
 	{
 //		_vector[id] = _vector[id] + value;
-		return _vector[id];
-//		return _vector[id].addAndGet(value);
+//		return _vector[id];
+		return _vector[id].addAndGet(value);
 	}
 	
-	public synchronized long[] updateAndGetVector(int id, long ts)
+	public long[] updateAndGetVector(int id, long ts)
 	{
-		_vector[id] = _vector[id] + 1;
-//		System.out.println("CurrentValue: "+_vector[id]+", OtherTs: "+ts);
-//		_vector[id] = Math.max(_vector[id], ts) + 1;
-//		System.out.println("Result: "+_vector[id]);
-//		if((nUpdates.incrementAndGet() % 1000)==0) printVector();
-		long[] clone = _vector.clone();
-		return clone;
-//		int i = 0;
-//		AtomicLong timer = _vector[id];
-//		long currentTime = timer.get();
-//		while(!timer.compareAndSet(currentTime, (Math.max(currentTime, ts)+1)))
-//		{
-//			currentTime = timer.get();
-////			if(i > 10 ) System.out.println("Blocked!!!!!!!!");
-//			i++;
-//		}
-//		System.out.println("Loops: "+i);
-////		_vector[id].incrementAndGet();
-////		System.out.println("Clock: "+_vector[id]);
-//		return getVector();
+//		System.out.println("CurrentValue: "+_vector[id]+", OtherTs: "+ts); //testing mode!
+		
+//		_vector[id] = _vector[id] + 1;
+//		_vector[id] = Math.max(_vector[id], ts) + 1; //wrong way to do things. Each servers must update its own version vector at his speed
+//		System.out.println("Result: "+_vector[id]); //testing mode!
+//		if((nUpdates.incrementAndGet() % 1000)==0) printVector(); testing mode!
+//		return _vector.clone();
+		
+		_vector[id].incrementAndGet();
+		long[] aux = new long[_vector.length];
+		for(int pos=0; pos < aux.length; pos++ ) aux[pos] = _vector[pos].get();
+		return aux;
 	}
 	
 	
