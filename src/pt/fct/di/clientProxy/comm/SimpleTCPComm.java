@@ -121,6 +121,7 @@ public class SimpleTCPComm extends ClientComm{
 			//System.out.println(op.toString()+"\n");
 			//long st = System.currentTimeMillis();
 			op.setVersionVector(_service.getTimeVector());
+			System.out.println(op.toString());
 //			op.opValidation();
 //			if (_debug ) System.out.println(op.toString());
 			op.serialize(_oos);

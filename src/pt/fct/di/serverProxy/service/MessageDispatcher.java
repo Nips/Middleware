@@ -19,8 +19,8 @@ public class MessageDispatcher {
 	private SyncManager _sync;
 	
 	private AtomicInteger _noOpOccurencies; //for testing proposes only.
-	protected final SimpleCondition _clientcondition = new SimpleCondition();
-	protected final SimpleCondition _servercondition = new SimpleCondition();
+//	protected final SimpleCondition _clientcondition = new SimpleCondition();
+//	protected final SimpleCondition _servercondition = new SimpleCondition();
 //   protected final SimpleCondition _serverCondition = new SimpleCondition();
 	
 	public MessageDispatcher(ServerService service, SyncManager manager)
@@ -33,11 +33,6 @@ public class MessageDispatcher {
 	public void close()
 	{
 		System.out.println("NoOpOccurrencies: "+_noOpOccurencies.get());
-		long[] vv = _sync.getOwnVector();
-		System.out.print("VersionVector: [ ");
-		for(int pos = 0; pos < vv.length; pos++)
-			System.out.print(vv[pos]+", ");
-		System.out.println("]");
 	}
 	
 	public IResult executeClientOperation(IClientOperation op) throws ServiceException, InterruptedException
@@ -53,33 +48,37 @@ public class MessageDispatcher {
 		IResult result = null;
 		final int opType = op.getType();
 		final int opId = op.getID();
+		final long[] vector = op.getVersionVector();
 //		System.out.println("Operation type: "+opType);
 		if(opType == 1 || opType == 2)
 		{
 //			System.out.print("Order and Transformation phase...");
 			result = _service.orderTransformExecute((LoggableOperation)op);
-			if(result.getCode() > 0) result.setVersionVector(_sync.updateAndGetVector(opId, op.getVersionVector()[opId]));
+			if(result.getCode() > 0) result.setVersionVector(_sync.updateAndGetVector(opId, vector[opId]));
 			else
 			{
-				if(result.getCode() < 0 ) System.out.println("Error somewhere on the system");
+//				if(result.getCode() < 0 ) System.out.println("Error somewhere on the system");
 				_noOpOccurencies.incrementAndGet();
 				result.setVersionVector(_sync.getOwnVector());
 			}
-//			if(result.getCode() >= 0) _countWrites++;
+			
+//			synchronized(this)
+//			{
+//				System.out.print("Code: "+result.getCode());
+//				System.out.print(" with generated vv: ");
+//				long[] vector = result.getVersionVector();
+//				for(int pos = 0; pos < vector.length; pos++)
+//				System.out.print(vector[pos]+", ");
+//				System.out.println("]");
+//			}
 		}
 		else
 		{
 			result = _service.executeReads(op); //Read or Scan operation
 			result.setVersionVector(_sync.getOwnVector());
-//			if(result.getCode() >= 0) _countReads++;
-//			System.out.println("Read executed successfuly...");
 		}
 		result.setOpSeq(op.getOpSeq());
 		
-//		_activeClients.decrementAndGet();
-//		System.out.println("Active clients: "+_activeClients.get());
-//		if(_activeClients.get() == 0) _servercondition.signal();
-//		System.out.println("\n");
 		return result;
 	}
 	
@@ -101,43 +100,43 @@ public class MessageDispatcher {
 		return true;
 	}
 	
-	public boolean applyOperations(Map<Integer,List<ILogOperation>> syncMap)
-	{		
-//		_syncPhase.set(true);
-//		while(_activeClients.get() > 0) _clientCondition.await();
-		
-		for(Map.Entry<Integer, List<ILogOperation>> entry : syncMap.entrySet())
-		{
-			int successfulOps = 0;
-			int clientId = entry.getKey();
-			List<ILogOperation> ops = entry.getValue();
-			for(ILogOperation op : ops)
-			{
-				if(_service.applyOperation(op)) successfulOps++;
-//				ReadResult res = (ReadResult)_service.executeReads(new Read(op.getID(), 10, op.getFamilyAndKey().get_value1(), op.getFamilyAndKey().get_value2(), op.getFields(), op.getConsistency()));
-//				for(Map.Entry<String, String> read : res.getValues().entrySet())
-//					System.out.println("Field: "+read.getKey()+" Value: "+read.getValue());
-			}
-//			if(successfulOps > 0) _sync.updateClientVersion(clientId, (long)successfulOps);
-		}
-		
-//		_service.logToString();
-//		_syncPhase.set(false);
-//		_clientcondition.signalAll();
-		return true;
-	}
+//	public boolean applyOperations(Map<Integer,List<ILogOperation>> syncMap)
+//	{		
+////		_syncPhase.set(true);
+////		while(_activeClients.get() > 0) _clientCondition.await();
+//		
+//		for(Map.Entry<Integer, List<ILogOperation>> entry : syncMap.entrySet())
+//		{
+//			int successfulOps = 0;
+//			int clientId = entry.getKey();
+//			List<ILogOperation> ops = entry.getValue();
+//			for(ILogOperation op : ops)
+//			{
+//				if(_service.applyOperation(op)) successfulOps++;
+////				ReadResult res = (ReadResult)_service.executeReads(new Read(op.getID(), 10, op.getFamilyAndKey().get_value1(), op.getFamilyAndKey().get_value2(), op.getFields(), op.getConsistency()));
+////				for(Map.Entry<String, String> read : res.getValues().entrySet())
+////					System.out.println("Field: "+read.getKey()+" Value: "+read.getValue());
+//			}
+////			if(successfulOps > 0) _sync.updateClientVersion(clientId, (long)successfulOps);
+//		}
+//		
+////		_service.logToString();
+////		_syncPhase.set(false);
+////		_clientcondition.signalAll();
+//		return true;
+//	}
 	
-	public Map<Integer,List<ILogOperation>> getSyncOperations(Map<Integer,Long> requestList) throws InterruptedException
-	{
-//		_getInfoPhase.set(true);
-//		while(_activeClients.get() > 0 && _syncPhase.get()) _servercondition.await();
-		
-		Map<Integer,List<ILogOperation>> syncMap = _service.getSyncOperations(requestList);
-
-//		_getInfoPhase.set(false);
-//		_clientcondition.signalAll();
-		
-		return syncMap;
-	}
+//	public Map<Integer,List<ILogOperation>> getSyncOperations(Map<Integer,Long> requestList) throws InterruptedException
+//	{
+////		_getInfoPhase.set(true);
+////		while(_activeClients.get() > 0 && _syncPhase.get()) _servercondition.await();
+//		
+//		Map<Integer,List<ILogOperation>> syncMap = _service.getSyncOperations(requestList);
+//
+////		_getInfoPhase.set(false);
+////		_clientcondition.signalAll();
+//		
+//		return syncMap;
+//	}
 	
 }

@@ -25,22 +25,31 @@ public class VersionVector implements Timer{
 	
 	public synchronized long[] getTimeVector()
 	{
+//		long[] aux = _versionVector.clone();
+//		System.out.print(" VV: ");
+//		for(int pos = 0; pos < aux.length; pos++)
+//		System.out.print(aux[pos]+", ");
+//		System.out.println("]");
+//		return aux;
 		return _versionVector.clone();
 	}
 	
 	public void updateOwnTime(int id)
 	{
-		_versionVector[id] = _versionVector[id] + 1;
+//		_versionVector[id] = _versionVector[id] + 1;
 	}
 
 	public synchronized void updateTimer(long[] otherVector) throws Exception
 	{
 //		if(otherVector.length != _versionVector.length)	throw new Exception("Time clock vector must have the same size: otherVector.length != _clock.length");
 		for(int pos=0; pos<_versionVector.length; pos++)
-			_versionVector[pos] = Math.max(_versionVector[pos], otherVector[pos]);
+		{
+			long max = Math.max(_versionVector[pos], otherVector[pos]);
+			_versionVector[pos] = max;	
+		}
 //		nUpdates.incrementAndGet();
 //		printVector();
-		if((nUpdates.incrementAndGet() % 1000)==0) printVector();
+//		if((nUpdates.incrementAndGet() % 1000)==0) printVector();
 	}
 
 	public void setAndUpdateTime(long[] otherVector, int id) throws Exception

@@ -19,11 +19,6 @@ public abstract class ClientOperation implements IClientOperation{
 	public int _id;
 	
 	/**
-	 * Operation's Sequence ID.
-	 */
-	public int _seqID;
-	
-	/**
 	 * Operation sequence number.
 	 */
 	public int _opSeq;

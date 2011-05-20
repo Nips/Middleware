@@ -17,7 +17,7 @@ public class UpdateResult implements IResult{
 	
 	public UpdateResult(int code)
 	{
-		this._opSeq = 0;
+		this._opSeq = -1;
 		this._code = code;
 		this._msg = "";
 		this._versionVector = null;
@@ -25,7 +25,7 @@ public class UpdateResult implements IResult{
 	
 	public UpdateResult(int code, String msg)
 	{
-		this._opSeq = 0;
+		this._opSeq = -1;
 		this._code = code;
 		this._msg = msg;
 		this._versionVector = null;

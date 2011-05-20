@@ -13,30 +13,42 @@ import java.util.StringTokenizer;
 import pt.fct.di.db.ConsistencyLevel;
 import pt.fct.di.ops.Delete;
 import pt.fct.di.ops.Put;
+import pt.fct.di.serverProxy.service.MessageDispatcher;
 import pt.fct.di.serverProxy.service.ServerService;
 import pt.fct.di.serverProxy.service.ServiceException;
+import pt.fct.di.serverProxy.sync.SyncException;
+import pt.fct.di.serverProxy.sync.SyncManager;
 
 public class LogTest {
 
 	/**
 	 * @param args
+	 * @throws SyncException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SyncException {
 		// TODO Auto-generated method stub
 		
 		try {
-			FileReader fis = new FileReader(new File("testSection/testLog.txt"));
+			FileReader fis = new FileReader(new File("testSection/ConflictTest.txt"));
 			BufferedReader br = new BufferedReader(fis);
 			
 			Properties p = new Properties();
-			p.setProperty("remoteValues", "true");
+			p.setProperty("remoteValues", "false");
 			p.setProperty("syncWaitingTime", "500");
 			p.setProperty("dbname", "pt.fct.di.db.MongoDB");
 			p.setProperty("hosts", "127.0.0.1:27017");
 			p.setProperty("mongodb.writeConcern", "normal");
+			p.setProperty("serverId", "0");
 			ServerService ss = new ServerService();
 			ss.setProperties(p);
 			ss.init();
+			SyncManager sm = new SyncManager();	
+			sm.setProperties(p);
+			sm.init();
+			
+			MessageDispatcher m = new MessageDispatcher(ss, sm);
+			
+			
 			long[] versionVector = new long[10];
 			
 			String line = "";
@@ -73,7 +85,8 @@ public class LogTest {
 					versionVector[op.getID()] = Long.parseLong(command[command.length-1]);
 					op.setVersionVector(versionVector);
 					
-					ss.orderTransformExecute(op);
+					m.executeClientOperation(op);
+//					ss.orderTransformExecute(op);
 					ss.logToString();
 					
 				}
@@ -96,10 +109,15 @@ public class LogTest {
 					versionVector[op.getID()] = Long.parseLong(command[command.length-1]);
 					op.setVersionVector(versionVector);
 					
-					ss.orderTransformExecute(op);
+					m.executeClientOperation(op);
+//					ss.orderTransformExecute(op);
 					ss.logToString();
 				}
 			}
+			
+			m.close();
+			ss.cleanup();
+			sm.cleanup();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -108,6 +126,9 @@ public class LogTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

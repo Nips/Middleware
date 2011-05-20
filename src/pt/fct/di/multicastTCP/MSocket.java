@@ -6,6 +6,7 @@ import java.util.Map;
 
 import pt.fct.di.ops.IClientOperation;
 //import pt.fct.di.ops.Operation;
+import pt.fct.di.util.SystemProperties;
 
 public class MSocket {
 
@@ -50,7 +51,13 @@ public class MSocket {
 			if(dividedAddr.length != 2) throw new Exception("Please enter an address in the following representation addr:port"); 
 			ipAddr = dividedAddr[0];
 			port = Integer.parseInt(dividedAddr[1]);
-			_proxies.put(addr, new TransportThread(new TSocket(ipAddr, port)));
+			if(SystemProperties.getPropertie("clientId").equals("0"))  _proxies.put(addr, new TransportThread(new TSocket(ipAddr, port)));
+			else
+			{
+//				_proxies.put(addr, new TransportThread(new TSocket(ipAddr, port),true));
+				if(i == 0) _proxies.put(addr, new TransportThread(new TSocket(ipAddr, port)));
+				else _proxies.put(addr, new TransportThread(new TSocket(ipAddr, port),true));
+			}
 		}		
 	}
 	

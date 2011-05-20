@@ -173,9 +173,17 @@ public class SimpleTCPComm extends IServerComm{
 			int type = in.readInt(); //read type of a received operation
 //			System.out.println("Operation type: "+type);
 
-			if(type == 1) return new Put(in);
+			if(type == 1) 
+			{
+				_countWrites++;
+				return new Put(in);
+			}
 			else if(type == 2) return new Delete(in);
-			else if(type == 3) return new Read(in);
+			else if(type == 3)
+			{
+				_countReads++;
+				return new Read(in);
+			}
 			else if(type == 4) return new Scan(in);
 			else throw new CommException("Operation not recognized! This will be ignored...");
 		}
@@ -189,16 +197,32 @@ public class SimpleTCPComm extends IServerComm{
 				//System.out.println("Connected: "+_connected);
 				try{
 					op = readOp(_inputStream);
+//					int id = op.getID();
+//					System.out.print("Op to send - opseq: "+op.getOpSeq()+", id: "+op.getID()+", vector [");
+//					long[] vector = op.getVersionVector();
+//					for(int pos = 0; pos < vector.length; pos++)
+//					System.out.print(vector[pos]+", ");
+//					System.out.println("]");
 					result = _dispatcher.executeClientOperation(op);
-					synchronized(_returnedCodes)
-					{
-						if(!_returnedCodes.containsKey(result.getCode())) _returnedCodes.put(result.getCode(), 1);
-						else
-						{
-							int occurs = _returnedCodes.get(result.getCode()) + 1;
-							_returnedCodes.put(result.getCode(), occurs);
-						}
-					}
+//					System.out.println("Result for op with id "+id+" and seq "+result.getOpSeq()+" returned code "+result.getCode());
+//					synchronized(_returnedCodes)
+//					{
+//						if(!_returnedCodes.containsKey(result.getCode())) _returnedCodes.put(result.getCode(), 1);
+//						else
+//						{
+//							int occurs = _returnedCodes.get(result.getCode()) + 1;
+//							_returnedCodes.put(result.getCode(), occurs);
+//						}
+//					}
+					
+//					if(id == 1) 
+//					{
+//						System.out.print("Sending: Code "+result.getCode()+" Vector [");
+//						long[] vv = result.getVersionVector();
+//						for(int pos = 0; pos < vv.length; pos++)
+//							System.out.print(vv[pos]+", ");
+//						System.out.println("]");
+//					}
 					sendMessage(result);
 				} catch (IOException e) {
 					//TODO Auto-generated catch block
@@ -260,6 +284,8 @@ public class SimpleTCPComm extends IServerComm{
 		
 		public void closeConnection()
 		{
+			System.out.println("Total of writes seen: "+_countWrites);
+			System.out.println("Total of reads seen: "+_countReads);
 			System.out.println("Closing client connection...");
 			try {
 				//_db.cleanup();

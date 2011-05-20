@@ -24,9 +24,9 @@ public class NoOp extends LogOperation {
 		super();
 	}
 	
-	public NoOp(int id, long timestamp)
+	public NoOp(int id, int seq, long timestamp)
 	{
-		super(TYPE, id, timestamp);
+		super(TYPE, id, seq, timestamp);
 	}
 	
 	@Override

@@ -98,99 +98,99 @@ public class InternalTCPComm extends IComm{
 		return _serversAddr.length;
 	}
 	
-	private long[] receiveVector(ObjectInputStream ois) throws IOException
-	{
-		//read info
-		int vectorSize = ois.readInt(); //also indicates the number of clients known between servers
-		long [] otherVector = new long[vectorSize];
-//		System.out.print("Other version vector: [ ");
-		for(int pos = 0; pos < vectorSize; pos++) 
-		{
-			otherVector[pos] = ois.readLong();
-//			System.out.print(otherVector[pos]+", ");
-		}
-//		System.out.println(" ]");
-		return otherVector;
-	}
+//	private long[] receiveVector(ObjectInputStream ois) throws IOException
+//	{
+//		//read info
+//		int vectorSize = ois.readInt(); //also indicates the number of clients known between servers
+//		long [] otherVector = new long[vectorSize];
+////		System.out.print("Other version vector: [ ");
+//		for(int pos = 0; pos < vectorSize; pos++) 
+//		{
+//			otherVector[pos] = ois.readLong();
+////			System.out.print(otherVector[pos]+", ");
+//		}
+////		System.out.println(" ]");
+//		return otherVector;
+//	}
 	
-	private void writeOperationsRequest(ObjectOutputStream oos, Map<Integer,Long> requestMap) throws IOException
-	{
-		oos.writeInt(requestMap.size());
-		for(Map.Entry<Integer,Long> entry : requestMap.entrySet())
-		{
-			oos.writeInt(entry.getKey());
-			oos.writeLong(entry.getValue());
-		}
-	}
+//	private void writeOperationsRequest(ObjectOutputStream oos, Map<Integer,Long> requestMap) throws IOException
+//	{
+//		oos.writeInt(requestMap.size());
+//		for(Map.Entry<Integer,Long> entry : requestMap.entrySet())
+//		{
+//			oos.writeInt(entry.getKey());
+//			oos.writeLong(entry.getValue());
+//		}
+//	}
 	
-	private Map<Integer,List<ILogOperation>> readSyncMap(ObjectInputStream ois) throws IOException
-	{
-		int clientId = -1;
-		int numberOps = -1;
-		int opType = -1;
-		Map<Integer,List<ILogOperation>> syncMap = null;
-		List<ILogOperation> opsToSync = null;
-		
-		int size = ois.readInt();
-//		System.out.println("Size of Map: "+size);
-		syncMap = new HashMap<Integer,List<ILogOperation>>(size);
-		for(int nElem=0; nElem < size; nElem++)
-		{
-			clientId = ois.readInt();
-//			System.out.println("clientId: "+clientId);
-			numberOps = ois.readInt();
-//			System.out.println("NumberOps: "+numberOps);
-			opsToSync = new ArrayList<ILogOperation>(numberOps);
-			for(int opPos = 0; opPos < numberOps; opPos++)
-			{
-				opType = ois.readInt();
-//				System.out.println("OpType: "+opType);
-				if(opType == 1) opsToSync.add(new PutLog(ois));
-				else if(opType == 2) opsToSync.add(new DeleteLog(ois));
-			}
-			syncMap.put(clientId, opsToSync);
-		}
-		return syncMap;
-	}
+//	private Map<Integer,List<ILogOperation>> readSyncMap(ObjectInputStream ois) throws IOException
+//	{
+//		int clientId = -1;
+//		int numberOps = -1;
+//		int opType = -1;
+//		Map<Integer,List<ILogOperation>> syncMap = null;
+//		List<ILogOperation> opsToSync = null;
+//		
+//		int size = ois.readInt();
+////		System.out.println("Size of Map: "+size);
+//		syncMap = new HashMap<Integer,List<ILogOperation>>(size);
+//		for(int nElem=0; nElem < size; nElem++)
+//		{
+//			clientId = ois.readInt();
+////			System.out.println("clientId: "+clientId);
+//			numberOps = ois.readInt();
+////			System.out.println("NumberOps: "+numberOps);
+//			opsToSync = new ArrayList<ILogOperation>(numberOps);
+//			for(int opPos = 0; opPos < numberOps; opPos++)
+//			{
+//				opType = ois.readInt();
+////				System.out.println("OpType: "+opType);
+//				if(opType == 1) opsToSync.add(new PutLog(ois));
+//				else if(opType == 2) opsToSync.add(new DeleteLog(ois));
+//			}
+//			syncMap.put(clientId, opsToSync);
+//		}
+//		return syncMap;
+//	}
 	
-	private void synchronize(ObjectInputStream ois, ObjectOutputStream oos) throws IOException
-	{
-		try
-		{
-			System.out.println("\n= Starting Sync Protocol initiated by other=\n");
-			int otherServerId = ois.readInt();
-			long [] otherVector = receiveVector(ois);
-			
-			//see if it is synchronized
-			Map<Integer,Long> requestMap = new HashMap<Integer,Long>(otherVector.length);
-			boolean updated = _dispatcher.verifyVersionVector(otherServerId, otherVector, requestMap);
-			
-//			System.out.println("=======================");
-//			System.out.println("|| Operations to Sync||");
-//			System.out.println("=======================");
-//			System.out.println("SyncMap size: "+requestMap.size());
-//			for(Map.Entry<Integer,Long> entry : requestMap.entrySet())
-//				System.out.println("ClientId: "+entry.getKey()+", Timestamp: "+entry.getValue());
-			
-			//write request
-//			System.out.println("\n= Writing Request to Sync =\n");
-			if(updated) oos.writeBoolean(true);
-			else
-			{
-				oos.writeBoolean(false);
-				writeOperationsRequest(oos, requestMap);
-				oos.flush();
-				
-				//read response to early request in 8
-//				System.out.println("\n= Applying Sync Operations =\n");
-				Map<Integer,List<ILogOperation>> syncMap = this.readSyncMap(ois);
-				_dispatcher.applyOperations(syncMap);
-			}
-			System.out.println("\n= Finishing Sync Protocol initiated by other=\n");
-		} catch (InterruptedException e) {
-			System.out.println("HInternalComm - synchronize() thrown InterruptedException");
-		}
-	}
+//	private void synchronize(ObjectInputStream ois, ObjectOutputStream oos) throws IOException
+//	{
+//		try
+//		{
+//			System.out.println("\n= Starting Sync Protocol initiated by other=\n");
+//			int otherServerId = ois.readInt();
+//			long [] otherVector = receiveVector(ois);
+//			
+//			//see if it is synchronized
+//			Map<Integer,Long> requestMap = new HashMap<Integer,Long>(otherVector.length);
+//			boolean updated = _dispatcher.verifyVersionVector(otherServerId, otherVector, requestMap);
+//			
+////			System.out.println("=======================");
+////			System.out.println("|| Operations to Sync||");
+////			System.out.println("=======================");
+////			System.out.println("SyncMap size: "+requestMap.size());
+////			for(Map.Entry<Integer,Long> entry : requestMap.entrySet())
+////				System.out.println("ClientId: "+entry.getKey()+", Timestamp: "+entry.getValue());
+//			
+//			//write request
+////			System.out.println("\n= Writing Request to Sync =\n");
+//			if(updated) oos.writeBoolean(true);
+//			else
+//			{
+//				oos.writeBoolean(false);
+//				writeOperationsRequest(oos, requestMap);
+//				oos.flush();
+//				
+//				//read response to early request in 8
+////				System.out.println("\n= Applying Sync Operations =\n");
+//				Map<Integer,List<ILogOperation>> syncMap = this.readSyncMap(ois);
+//				_dispatcher.applyOperations(syncMap);
+//			}
+//			System.out.println("\n= Finishing Sync Protocol initiated by other=\n");
+//		} catch (InterruptedException e) {
+//			System.out.println("HInternalComm - synchronize() thrown InterruptedException");
+//		}
+//	}
 	
 //	public void treatInternalMessage(ObjectInputStream ois, ObjectOutputStream oos) throws IOException
 //	{

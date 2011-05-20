@@ -261,25 +261,35 @@ public class Put extends ClientOperation implements LoggableOperation{
 			values += value.getKey() + "=" + value.getValue() + ", ";
 		return values;
 	}
+	
+	private String printVector()
+	{
+		String msg = "";
+		msg += " [ ";
+		for(int pos = 0; pos < _versionVector.length; pos++)
+			msg+= _versionVector[pos]+", ";
+		msg+= "]";
+		return msg;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Put [TYPE=" + TYPE + ", _id=" + _id + ", _columnFamily="
-				+ _columnFamily + ", _rowKey=" + _rowKey + ", _values:"
-				+ toStringValues() + ", _versionVector=" + _versionVector + "]";
+		return "Put [TYPE=" + TYPE + ", _id=" + _id + /*", _columnFamily="
+				+ _columnFamily + ", _rowKey=" + _rowKey +*/ ", _values:"
+				+ toStringValues() + ", _versionVector=" + printVector() + "]";
 	}
 
 	@Override
 	public ILogOperation convertToLog() {
-		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues(), _versionVector[_id]);
+		return new PutLog(_id, _opSeq, _columnFamily, _rowKey, _values.getValues(), _versionVector[_id]);
 	}
 	
 	@Override
 	public ILogOperation convertToLog(DB remotedb) {
-		return new PutLog(_id, _columnFamily, _rowKey, _values.getValues().keySet(), _versionVector[_id], remotedb);
+		return new PutLog(_id, _opSeq, _columnFamily, _rowKey, _values.getValues().keySet(), _versionVector[_id], remotedb);
 	}
 
 	/** After transforming an operation the final set of fields that not conflict with new operation log entries is 

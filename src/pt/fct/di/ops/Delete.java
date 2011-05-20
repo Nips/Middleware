@@ -262,12 +262,12 @@ public class Delete extends ClientOperation implements LoggableOperation{
 
 	@Override
 	public ILogOperation convertToLog() {
-		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
+		return new DeleteLog(_id, _opSeq, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
 	}
 	
 	@Override
 	public ILogOperation convertToLog(DB remotedb) {
-		return new DeleteLog(_id, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
+		return new DeleteLog(_id, _opSeq, _columnFamily, _rowKey, _fields.getFields(), _versionVector[_id]);
 	}
 
 	@Override

@@ -46,10 +46,10 @@ public class SyncManager {
 	public void init() throws SyncException
 	{
 		if(!_p.containsKey("serverId")) throw new SyncException("Field \"serverId\" not found. Please update conf file.");
-		if(!_p.containsKey("syncWaitingTime")) throw new SyncException("Field \"syncWaitingTime\" not found. Please update conf file.");
+//		if(!_p.containsKey("syncWaitingTime")) throw new SyncException("Field \"syncWaitingTime\" not found. Please update conf file.");
 		
-		try {
-			_comm = InternalTCPComm.getInstance();
+//		try {
+//			_comm = InternalTCPComm.getInstance();
 			_myId = Integer.parseInt(_p.getProperty("serverId"));
 			_vectors = new VersionVector[_myId+1];
 			_vectors[_myId] = new VersionVector();
@@ -57,15 +57,20 @@ public class SyncManager {
 //			System.out.println("Number of Servers: "+_vectors.length);
 //			for(int pos = 0; pos<_vectors.length; pos++)
 //				_vectors[pos] = new VersionVector();
-			_waitingTime = Long.parseLong(_p.getProperty("syncWaitingTime")); 
+//			_waitingTime = Long.parseLong(_p.getProperty("syncWaitingTime")); 
 //			if(_waitingTime > 500) initHandler();
-		} catch (CommException e) {
-			throw new SyncException(e);
-		}
+//		} catch (CommException e) {
+//			throw new SyncException(e);
+//		}
 	}
 	
 	public void cleanup()
 	{
+		long[] vv = getOwnVector();
+		System.out.print("VersionVector: [ ");
+		for(int pos = 0; pos < vv.length; pos++)
+			System.out.print(vv[pos]+", ");
+		System.out.println("]");
 //		_sync.cleanup();
 	}
 	

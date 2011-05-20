@@ -41,15 +41,15 @@ public class DeleteLog extends LogOperation{
 //		this._fields = fields;
 //	}
 	
-	public DeleteLog(int id, Set<String> fields)
+	public DeleteLog(int id, int seq, Set<String> fields)
 	{
-		super(TYPE, id);
+		super(TYPE, seq, id);
 		this._fields = new FieldsOrValues(fields);
 	}
 	
-	public DeleteLog(int id, String columnFamily, String rowKey, Set<String> fields, long timestamp)
+	public DeleteLog(int id, int seq, String columnFamily, String rowKey, Set<String> fields, long timestamp)
 	{
-		super(TYPE, id, timestamp);
+		super(TYPE, id, seq, timestamp);
 		this._columnFamily = columnFamily;
 		this._rowKey = rowKey;
 		this._fields = new FieldsOrValues(fields);
@@ -143,6 +143,7 @@ public class DeleteLog extends LogOperation{
 		//serialize
 		oos.writeInt(_type);
 		oos.writeInt(_id);
+		oos.writeInt(_seq);
 		oos.writeUTF(_columnFamily);
 		oos.writeUTF(_rowKey);
 		writeFields(oos);
@@ -154,6 +155,7 @@ public class DeleteLog extends LogOperation{
 	@Override
 	public void deserialize(ObjectInputStream ois) throws IOException {
 		_id = ois.readInt();
+		_seq = ois.readInt();
 		_columnFamily = ois.readUTF();
 		_rowKey = ois.readUTF();
 		readFields(ois);
@@ -238,7 +240,8 @@ public class DeleteLog extends LogOperation{
 	
 	@Override
 	public String toString() {
-		return "Delete [_id=" + _id + ", _columnFamily="+ _columnFamily +", _rowKey= "+ _rowKey + ", _timestamp="+_timestamp+", _fields=" + readFields() + "]";
+		return "Delete [_id=" + _id + ", _seq=" + _seq + ", _columnFamily="+ _columnFamily +", _rowKey= "+ _rowKey + 
+						", _fields=" + readFields() + ", _timestamp=" + _timestamp + "]";
 	}
 
 	@Override

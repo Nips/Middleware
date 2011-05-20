@@ -218,7 +218,7 @@ public class ProxyService implements IService{
 			
 //			if(result == null) return -2;
 			
-//			_timer.setAndUpdateTime(result.getVersionVector(), //por ID); //TODO: Verificar se isto devia estar aqui ou no TransportLayer
+//			_timer.setAndUpdateTime(result.getVersionVector(), //por ID); //TODO: Verificar se isto devia estar aqui ou no TransportLayer 
 			
 			int code = result.getCode();
 			if(code < 0 ) return code;

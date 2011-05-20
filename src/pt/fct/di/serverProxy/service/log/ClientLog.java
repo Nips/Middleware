@@ -38,6 +38,7 @@ public class ClientLog {
 	{
 		if(!_clientLog.containsKey(id))
 		{
+//			System.out.println(op.toString());
 			TreeSet<ILogOperation> client = new TreeSet<ILogOperation>();
 			client.add(op);
 			_clientLog.put(id,client);
@@ -53,6 +54,7 @@ public class ClientLog {
 		TreeSet<ILogOperation> pq = _clientLog.get(clientId); 
 		synchronized(pq)
 		{
+//			System.out.println(op.toString());
 			pq.add(op);
 		}
 	}
@@ -100,7 +102,7 @@ public class ClientLog {
 		while(it.hasNext())
 		{
 			Map.Entry<Integer, TreeSet<ILogOperation>> entry = it.next();
-			msg += "Client Id => ";
+			msg += "Client Id => \n";
 			ILogOperation next = null;
 			msg += "{ ";
 			Iterator<ILogOperation> log = entry.getValue().iterator();

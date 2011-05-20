@@ -182,7 +182,12 @@ public class ServerService {
 		else newLogOp = op.convertToLog();
 		
 		//Atomic test to verify if this operation is the first to inserted in the log for some family and key.
-		if(testAndAddNewOperation(newLogOp)) return this.executeUpdates(op);
+		if(testAndAddNewOperation(newLogOp))
+		{
+			IResult result = this.executeUpdates(op);
+//			System.out.println("Result Operation Code: "+result.getCode());
+			return result;
+		}
 		// System.out.println("Row already exists...");
 		LinkedList<ILogOperation> record = _structuredLog.get(newLogOp.getFamilyAndKey());
 		
@@ -191,11 +196,12 @@ public class ServerService {
 		{
 			//System.out.println("OrderPhase initiated...");
 			//Order phase 
-			ListIterator<ILogOperation> it = _structuredLog.putInRecord(record, newLogOp);
+			ListIterator<ILogOperation> it = _structuredLog.putOpInRecord(record, newLogOp);
 			//System.out.println("OrderPhase completed...");
 			
 			Set<String> newLogOpFields = newLogOp.getFields();
 			Set<String> opLogFields = null;
+			ILogOperation opLog = null;
 			int jumps = 0;
 			//System.out.println("TransformationPhase initiated...");
 			
@@ -203,7 +209,9 @@ public class ServerService {
 			while(it.hasNext())
 			{
 //				System.out.println(opLog.toString());
-				opLogFields = it.next().getFields();
+				opLog = it.next();
+//				System.out.println("CompareOp: " + opLog.toString());
+				opLogFields = opLog.getFields();
 				
 				newLogOpFields.removeAll(opLogFields);  //SetA - SetB
 				jumps++; //number of ops seen in the log
@@ -212,6 +220,7 @@ public class ServerService {
 				//and must be deleted from the log. A NoOp operation is returned.
 				if(newLogOpFields.isEmpty())
 				{
+//					System.out.println("NOOP");
 					while(jumps > -1){ jumps--; it.previous(); } //Change iterator pointer to the operation to remove
 					it.remove(); //Remove resultOp from log
 					result = new UpdateResult(0);
@@ -245,11 +254,14 @@ public class ServerService {
 			if(result == null)
 			{
 				op.updateFields(newLogOpFields);
+//				System.out.println("Inserting Client Log");
 				_clientLog.put(op.getID(), newLogOp);
+//				System.out.println("Inserting Sequencial Log");
 				_sequencialLog.put(newLogOp);
+//				System.out.println("Done Inserting Sequencial log");
 				result = this.executeUpdates(op);
 			}
-			//System.out.println("ExecutePhase done...");
+//			System.out.println("Result Operation Code: "+result.getCode());
 		}
 		return result;
 	}

@@ -53,24 +53,24 @@ public class PutLog extends LogOperation{
 //		this._fields = fields;
 //	}
 	
-	public PutLog(int id, Set<String> fields)
+	public PutLog(int id, int seq, Set<String> fields)
 	{
-		super(TYPE,id);
+		super(TYPE,id,seq);
 		this._fields = fields;
 	}
 	
-	public PutLog(int id, String columnFamily, String key, Map<String,String> values, long timestamp)
+	public PutLog(int id, int seq, String columnFamily, String key, Map<String,String> values, long timestamp)
 	{
-		super(TYPE, id, timestamp);
+		super(TYPE, id, seq, timestamp);
 		this._columnFamily = columnFamily;
 		this._rowKey = key;
 		this._fields = values.keySet();
 		setValues(values);
 	}
 	
-	public PutLog(int id, String columnFamily, String key, Set<String> fields, long timestamp, DB remotedatabase)
+	public PutLog(int id, int seq, String columnFamily, String key, Set<String> fields, long timestamp, DB remotedatabase)
 	{
-		super(TYPE, id, timestamp);
+		super(TYPE, id, seq, timestamp);
 		this._columnFamily = columnFamily;
 		this._rowKey = key;
 		this._fields = fields;
@@ -192,6 +192,7 @@ public class PutLog extends LogOperation{
 		//serialize
 		oos.writeInt(_type);
 		oos.writeInt(_id);
+		oos.writeInt(_seq);
 		oos.writeUTF(_columnFamily);
 		oos.writeUTF(_rowKey);
 		writeValues(oos);
@@ -206,6 +207,7 @@ public class PutLog extends LogOperation{
 	public void deserialize(ObjectInputStream ois) throws IOException{
 		//deserialize
 		this._id = ois.readInt();
+		this._seq = ois.readInt();
 		this._columnFamily = ois.readUTF();
 		this._rowKey = ois.readUTF();
 		readValues(ois);
@@ -273,8 +275,8 @@ public class PutLog extends LogOperation{
 	
 	@Override
 	public String toString() {
-		return "Put [_id=" + _id + ", _columnFamily="+ _columnFamily +", _rowKey= "+ _rowKey + ", _timestamp="+_timestamp+", " +
-				"_fields=" + readFields() + "_values=" + readValues() + "]";
+		return "PutLog [_id=" + _id + ", _seq=" + _seq + ", _columnFamily=" + _columnFamily + ", _rowKey= " + _rowKey +
+				", _fields=" + readFields() + "_values=" + readValues() + ", _timestamp= " + _timestamp + "]";
 	}
 
 	@Override

@@ -69,6 +69,7 @@ public class ServerProxy extends Thread{
 			this._manager.setProperties(_p);
 			
 			this._service.init();
+			this._manager.init();
 			
 			this._dispatcher = new MessageDispatcher(_service, _manager);
 			
@@ -78,11 +79,11 @@ public class ServerProxy extends Thread{
 			this._externalcomm.initServer();
 			
 			//Initiate internal servers communication
-			this._internalcomm = CommFactory.newComm(_p);
-			this._internalcomm.setDispacher(_dispatcher);
-			this._internalcomm.initServer();
+//			this._internalcomm = CommFactory.newComm(_p);
+//			this._internalcomm.setDispacher(_dispatcher);
+//			this._internalcomm.initServer();
 			
-			this._manager.init();
+
 
 		}
 		 catch(UnknownCommException uce){

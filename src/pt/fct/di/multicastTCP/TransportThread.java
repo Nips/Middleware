@@ -1,5 +1,7 @@
 package pt.fct.di.multicastTCP;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import pt.fct.di.client.CException;
 import pt.fct.di.clientProxy.comm.ClientComm;
 import pt.fct.di.clientProxy.concurrent.OperationQueue;
@@ -29,6 +31,14 @@ public class TransportThread extends Thread{
 		_debug = SystemProperties._debug;
 	}
 	
+	public TransportThread(TSocket t, boolean debug)
+	{
+		_socket = t;
+//		_opQueue = new OperationQueue(OPERATIONS_IN_BUFFER);
+		_opQueue = new OperationQueue();
+		_debug = debug;
+	}
+	
 	public void init() throws TCPException
 	{
 		if(!_socket.isOpen()) _socket.open();
@@ -42,8 +52,8 @@ public class TransportThread extends Thread{
 //		System.out.println("Closing TransportThread!!");
 		_close = true;
 		_opQueue.close();
-		_socket.close();
-		this.interrupt();
+//		_socket.close();
+//		this.interrupt();
 	}
 	
 	public TSocket getSocket()
@@ -83,6 +93,7 @@ public class TransportThread extends Thread{
 			return;
 		}
 		
+		IClientOperation op = null;
 		IResult r = null;
 		IAsyncCallback cb = null;
 		while(!_close /*|| !_opQueue.isEmpty()*/)
@@ -90,21 +101,45 @@ public class TransportThread extends Thread{
 			try {
 				//TREAT RECEIVE RESULTS 
 //				System.out.println(_close);
-				_socket.sendMessage(_opQueue.removeMsg());
+				
+				op = _opQueue.removeMsg();
+//				if(_debug) System.out.println(op.toString());
+//				{
+//					System.out.print("Op to send - opseq: "+op.getOpSeq()+", id: "+op.getID()+", vector [");
+//					long[] vector = op.getVersionVector();
+//					for(int pos = 0; pos < vector.length; pos++)
+//					System.out.print(vector[pos]+", ");
+//					System.out.println("]");
+//				}
+				
+				_socket.sendMessage(op);
 				
 				//Waits until a result arrive
 				r = _socket.receiveMessage();
 				
+//				if(_debug)
+//				{
+//					System.out.print("Receiving: Code "+r.getCode()+" Vector [");
+//					long[] vector = r.getVersionVector();
+//					for(int pos = 0; pos < vector.length; pos++)
+//						System.out.print(vector[pos]+", ");
+//					System.out.println("]");
+//				}
+				
+				
+				//TODO: Change this after testing to r.getVersionVector()
 				try {
-					long[] vv = r.getVersionVector();			
+					long[] vv = r.getVersionVector();
 					service.updateTimeVector(vv);
+//					if(r.getCode() > 0)
+//					{
+//						long[] aux = new long[10];
+//						aux[op.getID()] = time++;
+//						service.updateTimeVector(aux);
+//					}
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
-				
-//				System.out.println(r.toString());
-//				System.out.println("Result size: "+r.serialize().length);
-				//System.out.println("Received result: \n"+r.toString());
 				
 				//Get and put message in ASyncCallback
 				cb = ClientComm.getRegisteredCallback(r.getOpSeq());			

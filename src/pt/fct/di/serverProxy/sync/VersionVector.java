@@ -54,7 +54,8 @@ public class VersionVector {
 	
 	public synchronized long[] getVector()
 	{
-		return _vector.clone();
+		long[] clone = _vector.clone();
+		return clone;
 //		long[] aux = new long[_vector.length];
 //		for(int pos=0; pos < _vector.length; pos++ ) aux[pos] = _vector[pos].get();
 //		return aux;
@@ -92,10 +93,13 @@ public class VersionVector {
 	
 	public synchronized long[] updateAndGetVector(int id, long ts)
 	{
-//		_vector[id] = _vector[id] + 1;
-		_vector[id] = Math.max(_vector[id], ts) + 1;
-		if((nUpdates.incrementAndGet() % 1000)==0) printVector();
-		return _vector.clone();
+		_vector[id] = _vector[id] + 1;
+//		System.out.println("CurrentValue: "+_vector[id]+", OtherTs: "+ts);
+//		_vector[id] = Math.max(_vector[id], ts) + 1;
+//		System.out.println("Result: "+_vector[id]);
+//		if((nUpdates.incrementAndGet() % 1000)==0) printVector();
+		long[] clone = _vector.clone();
+		return clone;
 //		int i = 0;
 //		AtomicLong timer = _vector[id];
 //		long currentTime = timer.get();

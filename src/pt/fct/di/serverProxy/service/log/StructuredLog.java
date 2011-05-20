@@ -52,32 +52,38 @@ public class StructuredLog {
 		_structuredLog.put(familyAndKey, newRecord);	
 	}
 	
-	public ListIterator<ILogOperation> putInRecord(LinkedList<ILogOperation> record, ILogOperation op)
+	public ListIterator<ILogOperation> putOpInRecord(LinkedList<ILogOperation> record, ILogOperation op)
 	{	
+//		System.out.println(op.toString());
 		int compare = 0;
 		
 		ListIterator<ILogOperation> it = record.listIterator(record.size());
 		//System.out.println(it.hasPrevious()+" "+it.hasNext());
 		
 		//interate list backwards until we find the correct position for op
-		while(it.hasPrevious() && (compare=op.compareTo(it.previous())) < 0){ }
+//		ILogOperation logOp = it.previous();
+		while(it.hasPrevious() && (compare=op.compareTo(it.previous())) < 0){ 
+//			System.out.println("Op id "+op.getID()+" and ts "+op.getTS()+" and logOp id "+logOp.getID()+" and ts "+logOp.getTS());
+//			logOp = it.previous();
+//			System.out.println("Compare: "+compare);
+		}
 		if(compare > 0) it.next(); // just to correct the index position to insert op correctly in the log only if it is to insert on position > 1 && position <= size;
 		it.add(op);
 		return it;
 	}
 	
-	public void putInRecord(ILogOperation op)
-	{
-		int compare = 0;
-		
-		List<ILogOperation> record = _structuredLog.get(op.getFamilyAndKey());
-		ListIterator<ILogOperation> it = record.listIterator(record.size());
-		//System.out.println(it.hasPrevious()+" "+it.hasNext());
-		while(it.hasPrevious() && (compare=op.compareTo(it.previous())) < 0){ } //interate list backwards until we find the correct position for op
-		if(compare > 0) it.next(); // just to correct the index position to insert op correctly in the log;
-		it.add(op);
-//		System.out.println("Is op inside log? "+(it.previous().compareTo(op)==0));
-	}
+//	public void putInRecord(ILogOperation op)
+//	{
+//		int compare = 0;
+//		
+//		List<ILogOperation> record = _structuredLog.get(op.getFamilyAndKey());
+//		ListIterator<ILogOperation> it = record.listIterator(record.size());
+//		//System.out.println(it.hasPrevious()+" "+it.hasNext());
+//		while(it.hasPrevious() && (compare=op.compareTo(it.previous())) < 0){ } //interate list backwards until we find the correct position for op
+//		if(compare > 0) it.next(); // just to correct the index position to insert op correctly in the log;
+//		it.add(op);
+////		System.out.println("Is op inside log? "+(it.previous().compareTo(op)==0));
+//	}
 
 	public Set<Map.Entry<Pair<String,String>,LinkedList<ILogOperation>>> entrySet() {
 		return _structuredLog.entrySet();
@@ -116,7 +122,7 @@ public class StructuredLog {
 		while(it.hasNext())
 		{
 			Entry<Pair<String, String>, LinkedList<ILogOperation>> entry = it.next();
-			msg += "Family: "+entry.getKey().get_value1()+" and row key: "+entry.getKey().get_value2()+" =>  ";
+			msg += "Family: "+entry.getKey().get_value1()+" and row key: "+entry.getKey().get_value2()+" =>  \n";
 			ILogOperation next = null;
 			msg += " {";
 			Iterator<ILogOperation> log = entry.getValue().iterator();
